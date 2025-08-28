@@ -955,7 +955,7 @@ class ERP_mailbox_api
 
 			// Check if it’s private
 			if( $view_state == VS_PRIVATE ) {
-				$t_bug_data->private = true;
+				$t_bug_data->view_state = VS_PRIVATE;
 			} 
 
 			$t_bug_data->category_id			= (int) $this->_mailbox[ 'global_category_id' ];
