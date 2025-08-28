@@ -939,6 +939,8 @@ class ERP_mailbox_api
 
 			$t_project_id = ( ( $p_overwrite_project_id === FALSE ) ? $this->_mailbox[ 'project_id' ] : $p_overwrite_project_id );
 			ERP_set_temporary_overwrite( 'project_override', $t_project_id );
+			// Get the 'view_state' of the project
+			$view_state = project_get_field( $t_project_id, 'view_state' );
 
 			$t_bug_data = new BugData;
 
@@ -950,6 +952,11 @@ class ERP_mailbox_api
 			$t_bug_data->profile_id				= 0;
 			$t_bug_data->handler_id				= 0;
 			$t_bug_data->view_state				= (int) config_get( 'default_bug_view_status' );
+
+			// Check if it’s private
+			if( $view_state == VS_PRIVATE ) {
+				$t_bug_data->private = true;
+			} 
 
 			$t_bug_data->category_id			= (int) $this->_mailbox[ 'global_category_id' ];
 			$t_bug_data->reproducibility		= (int) config_get( 'default_bug_reproducibility' );
