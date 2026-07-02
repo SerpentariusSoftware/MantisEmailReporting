@@ -1,12 +1,57 @@
 # MantisBT EmailReporting Plugin
 
+**Version 1.0.0** (this fork)
+
 The EmailReporting plugin allows you to report an issue in MantisBT by sending an
 email to a particular mail account. It can also add notes/attachments to an existing
 issue by replying to it.
 
 This copy is a locally maintained fork of the official plugin (based on upstream
 version 0.10.1, see [Original project](#original-project) below) with additional
-fixes and features applied on top — see [Current state of this fork](#current-state-of-this-fork).
+fixes and features applied on top — see [Current state of this fork](#current-state-of-this-fork)
+and the [Changelog](doc/CHANGELOG.txt) for details.
+
+Requirements (this fork)
+=========================
+* MantisBT 1.3.0 or higher (same as upstream 0.10.x). **Compatible and tested with
+  MantisBT 2.28.4.**
+* **PHP 8.0 or higher.** Older PHP versions are no longer supported by this fork —
+  see the PHP 8 compatibility work below.
+* `/api/soap/mc_file_api.php` must be present (standard MantisBT SOAP API file)
+* Optional: `mbstring` extension (charset conversion), `OpenSSL` (mail encryption)
+
+Setup
+=====
+1. Extract/clone this repository into `mantis/plugins/EmailReporting/` (the folder
+   name must be `EmailReporting`).
+2. Open "Manage Plugins" in MantisBT and install/enable EmailReporting; it should show
+   as version 1.0.0.
+3. Go to "Manage EmailReporting" to add a mailbox (POP3/IMAP host, credentials,
+   target project) and adjust the plugin's configuration options.
+4. Schedule `scripts/bug_report_mail.php` to run periodically, e.g. via cron:
+   ```
+   */5 * * * * /usr/local/bin/php /path/to/mantis/plugins/EmailReporting/scripts/bug_report_mail.php
+   ```
+   See `doc/INSTALL.txt` for the full set of scheduling notes (webserver-triggered
+   alternative, Windows scheduling, etc.) — those are unchanged from upstream.
+5. **Optional but recommended: cron failure alerting.** Since PHP fatal errors halt
+   the script silently as far as cron is concerned, this fork adds
+   `scripts/bug_report_mail_cron.sh`, a wrapper that emails you if the job fails (or,
+   with `-s`, also when it succeeds — handy for testing the alert itself):
+   ```
+   cd mantis/plugins/EmailReporting/scripts
+   cp bug_report_mail_cron.env.example bug_report_mail_cron.env
+   # edit bug_report_mail_cron.env: set PHP_BIN and ALERT_EMAIL
+   chmod +x bug_report_mail_cron.sh
+   ```
+   Then point cron at the wrapper instead of `bug_report_mail.php` directly:
+   ```
+   */5 * * * * /path/to/mantis/plugins/EmailReporting/scripts/bug_report_mail_cron.sh
+   ```
+   `bug_report_mail_cron.env` is gitignored (it's server-specific and not meant to be
+   committed) — copy it fresh from the `.example` file on each server you deploy to.
+   The wrapper sends mail via `sendmail`, so a working local MTA (or `sendmail`-compatible
+   relay such as Postfix, Exim, or msmtp) is required for alerts to actually be delivered.
 
 Current state of this fork
 ===========================
@@ -34,6 +79,9 @@ On top of the official 0.10.1 release, this copy includes:
   emailed-in issues used the site/project default visibility regardless of the
   target project; new issues now inherit `VS_PRIVATE` when the target project itself
   is private.
+* **New: cron failure alerting.** `scripts/bug_report_mail_cron.sh` wraps the
+  scheduled job and emails you (via `sendmail`) if it fails, so a broken mailbox or a
+  PHP error doesn't fail silently. See [Setup](#setup) above.
 
 Feature set
 ===========
@@ -52,14 +100,17 @@ Feature set
   attachment
 * Reply/signature cleanup: strip signatures by delimiter, remove exact-match or
   Gmail-style quoted replies, remove MantisBT's own notification footer from replies,
-  and (new, see above) cut off long generic quoted-reply blocks
+  and cut off long generic quoted-reply blocks
 * Reporter handling: report as a single fixed "mail" user, resolve reporters by
   sender email address, optionally auto-create new user accounts, optional LDAP
   lookup, disposable-email checking, fallback reporter on failure
 * Use the email's priority header to set the issue priority, with a configurable
   priority mapping
+* New issues inherit their target project's visibility (private projects create
+  private issues)
 * Debug mode: save raw/parsed emails to disk, track memory usage, optionally attach
   the complete original email to the issue
+* Cron failure alerting via an optional wrapper script (see above)
 
 Original project
 =================

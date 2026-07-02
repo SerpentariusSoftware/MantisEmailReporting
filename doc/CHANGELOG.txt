@@ -1,4 +1,30 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.0 (this fork)
+	- PHP 8.0-8.4 compatibility: fixed a fatal parse error in the HTML-to-Markdown
+	  converter (duplicate "static $indent" declaration) that broke plugin load
+	  entirely on PHP 8.3+
+	- PHP 8.0-8.4 compatibility: replaced removed create_function()/each() calls in
+	  the vendored PEAR libraries (SASL SCRAM auth, PEAR destructor cleanup) with
+	  their modern equivalents
+	- PHP 8.0-8.4 compatibility: declared several dynamic properties across the
+	  vendored PEAR/Markdownify/simple_html_dom code to silence PHP 8.2+ deprecation
+	  warnings, and guarded a handful of trim(null)-style calls
+	- Dropped support for PHP versions older than 8.0
+	- Fixed a charset-detection bug that could turn accented characters (e.g.
+	  Hungarian o-double-acute/u-double-acute, or other Central/Western European
+	  letters) into '?', or in the worst case silently drop the entire email
+	  body/subject
+	- Added "Cut off quoted reply/history text" option (mail_strip_quoted_lines /
+	  mail_strip_quoted_lines_min_lines), which truncates the description/note once
+	  a run of consecutive '>' quoted lines is found, regardless of mail client or
+	  language
+	- New issues created in a private project now inherit that project's visibility
+	  (VS_PRIVATE) instead of always using the site default
+	- Added scripts/bug_report_mail_cron.sh, an optional cron wrapper that emails an
+	  alert (via sendmail) if bug_report_mail.php fails or times out, with a -s flag
+	  to also notify on success for testing. Server-specific settings live in a
+	  gitignored bug_report_mail_cron.env (see bug_report_mail_cron.env.example)
+
 May 2018 - EmailReporting-0.10.1
 	- Added error if, on installation, 'api/soap/mc_file_api.php' is missing
 	- Updated english and spanish language files
