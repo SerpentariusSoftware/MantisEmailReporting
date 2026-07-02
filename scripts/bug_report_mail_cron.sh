@@ -48,6 +48,22 @@ if [ -z "$ALERT_EMAIL" ]; then
 	exit 1
 fi
 
+# Sends a plain-text alert via sendmail (no "mail"/"mailx" command required).
+# ALERT_FROM is optional; if unset sendmail falls back to its own default.
+send_alert() {
+	local subject="$1"
+	local message="$2"
+
+	{
+		[ -n "${ALERT_FROM:-}" ] && echo "From: $ALERT_FROM"
+		echo "To: $ALERT_EMAIL"
+		echo "Subject: $subject"
+		echo "Content-Type: text/plain; charset=UTF-8"
+		echo
+		echo "$message"
+	} | sendmail -t
+}
+
 LOGFILE="$(mktemp)"
 trap 'rm -f "$LOGFILE"' EXIT
 
@@ -55,17 +71,15 @@ trap 'rm -f "$LOGFILE"' EXIT
 STATUS=$?
 
 if [ "$STATUS" -ne 0 ]; then
-	{
-		echo "bug_report_mail.php exited with status $STATUS on $(hostname) at $(date)"
-		echo
-		cat "$LOGFILE"
-	} | mail -s "EmailReporting cron FAILED (exit $STATUS)" "$ALERT_EMAIL"
+	send_alert "EmailReporting cron FAILED (exit $STATUS)" \
+		"bug_report_mail.php exited with status $STATUS on $(hostname) at $(date)
+
+$(cat "$LOGFILE")"
 elif [ "$NOTIFY_ON_SUCCESS" -eq 1 ]; then
-	{
-		echo "bug_report_mail.php completed successfully on $(hostname) at $(date)"
-		echo
-		cat "$LOGFILE"
-	} | mail -s "EmailReporting cron OK" "$ALERT_EMAIL"
+	send_alert "EmailReporting cron OK" \
+		"bug_report_mail.php completed successfully on $(hostname) at $(date)
+
+$(cat "$LOGFILE")"
 fi
 
 exit "$STATUS"
