@@ -1,4 +1,9 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.2 (this fork)
+	- Added a GPL-2.0 LICENSE file (matching the original plugin and MantisBT
+	  itself), and a README section pointing to it and noting the separate
+	  BSD/LGPL licenses of the vendored core_pear/ and Markdownify/ code
+
 Jul 2026 - EmailReporting-1.0.1 (this fork)
 	- Added scripts/patch_mantis_html_email.sh, an optional utility that patches
 	  MantisBT core (not this plugin) to send outgoing notification emails as HTML

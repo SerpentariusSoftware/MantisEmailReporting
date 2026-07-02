@@ -153,6 +153,13 @@ Feature set
   the complete original email to the issue
 * Cron failure alerting via an optional wrapper script (see above)
 
+License
+=======
+GPL-2.0, same as the original plugin and MantisBT itself — see [LICENSE](LICENSE).
+The vendored third-party code keeps its own license: `core_pear/` (PEAR, Auth_SASL,
+Net_POP3/IMAP, Mail_mimeDecode) is BSD-licensed, and `core/Mail/Markdownify/` is
+LGPL-licensed; see the header comments in those files.
+
 Original project
 =================
 This plugin is originally developed and maintained by the MantisBT team and
