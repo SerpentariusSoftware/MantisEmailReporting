@@ -15,19 +15,38 @@
 # succeeds - useful while testing, to confirm alerting itself is wired up
 # correctly. Leave it off for normal operation, or you'll get an email
 # every run.
+#
+# Server-specific settings (PHP_BIN, ALERT_EMAIL) live in
+# bug_report_mail_cron.env, next to this script, which is gitignored so
+# they never get committed or clobbered by a future pull. Copy
+# bug_report_mail_cron.env.example to bug_report_mail_cron.env and fill
+# it in before first use.
 
 set -u
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/bug_report_mail_cron.env"
+
 PHP_BIN="/usr/local/bin/php"
-SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/bug_report_mail.php"
-ALERT_EMAIL="you@example.com"
+SCRIPT="$SCRIPT_DIR/bug_report_mail.php"
+ALERT_EMAIL=""
 NOTIFY_ON_SUCCESS="${NOTIFY_ON_SUCCESS:-0}"
+
+if [ -f "$ENV_FILE" ]; then
+	# shellcheck disable=SC1090
+	source "$ENV_FILE"
+fi
 
 while getopts "s" opt; do
 	case "$opt" in
 		s) NOTIFY_ON_SUCCESS=1 ;;
 	esac
 done
+
+if [ -z "$ALERT_EMAIL" ]; then
+	echo "ALERT_EMAIL is not set. Copy $SCRIPT_DIR/bug_report_mail_cron.env.example to bug_report_mail_cron.env and fill it in." >&2
+	exit 1
+fi
 
 LOGFILE="$(mktemp)"
 trap 'rm -f "$LOGFILE"' EXIT
