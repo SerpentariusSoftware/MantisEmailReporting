@@ -53,6 +53,47 @@ Setup
    The wrapper sends mail via `sendmail`, so a working local MTA (or `sendmail`-compatible
    relay such as Postfix, Exim, or msmtp) is required for alerts to actually be delivered.
 
+Utility scripts
+================
+In addition to the standard `scripts/bug_report_mail.php` (the actual mail-fetching
+job, unchanged from upstream) and `scripts/bug_report_mail_cron.sh` (cron failure
+alerting, see [Setup](#setup) above), this fork includes:
+
+### `scripts/patch_mantis_html_email.sh`
+Patches **MantisBT core** (not this plugin) so that outgoing notification emails are
+sent as HTML instead of plain text. It edits `core/email_api.php` and
+`core/classes/EmailSenderPhpMailer.class.php` to wrap the email body in
+`<html><body>...</body></html>` (converting newlines to `<br />`) and switches
+PHPMailer to `isHTML( true )`.
+
+**Usage:**
+```
+scripts/patch_mantis_html_email.sh /path/to/mantis
+```
+The argument is your MantisBT root directory (defaults to `public_html` if omitted).
+The script:
+* takes timestamped backups of both files before touching them
+  (`<file>.bak.YYYYMMDD_HHMMSS`)
+* is idempotent — safe to re-run, it detects and skips already-applied patches
+* prints the backup paths and a `diff -u` command to review exactly what changed
+
+**Important caveats:**
+* Written against and only tested with **MantisBT 2.28.4**, where email sending was
+  restructured (the `EmailSenderPhpMailer` class and the `email_api.php` body-building
+  code this script targets). It is **not tested against any other MantisBT version**
+  — older or newer releases may have a different structure that the `sed`/`grep`
+  patterns in this script don't match, in which case it will simply report that it
+  can't find what it's looking for rather than silently patching the wrong thing.
+* This patches MantisBT **core** files directly, not the plugin. Since it's a core
+  hack rather than an official option, it will need to be **re-applied after any
+  MantisBT core upgrade** (upgrades will overwrite the patched files with the
+  original, plain-text versions).
+* It assumes the two target files match the exact structure this script's `sed`/
+  `grep` patterns expect (based on the stock MantisBT PHPMailer email sender); if
+  your MantisBT version has customized those files already, verify the diff before
+  trusting the patched output.
+* To roll back, restore from the timestamped `.bak` files it creates.
+
 Current state of this fork
 ===========================
 On top of the official 0.10.1 release, this copy includes:
