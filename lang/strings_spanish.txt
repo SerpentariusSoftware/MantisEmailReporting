@@ -72,6 +72,8 @@ $s_plugin_EmailReporting_mail_save_subject_in_note = 'Escribir el asunto del men
 $s_plugin_EmailReporting_mail_secured_script = 'Evitar que el script se ejecute desde el navegador web (Recomendado = "Sí")';
 $s_plugin_EmailReporting_mail_secured_ipaddr = 'Solo permitir el acceso a bug_report_mail desde esta dirección IP';
 $s_plugin_EmailReporting_mail_strip_gmail_style_replies = 'Elimiar estilo de respuesta de Gmail (Solo Ingles) de las notas (mail_remove_replies should be YES)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines = 'Cortar el texto de respuestas citadas al encontrar una serie de líneas que comienzan con \'>\' (funciona sin importar el cliente de correo o el idioma)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines_min_lines = 'Número mínimo de líneas consecutivas que comienzan con \'>\' necesarias para considerarlo el inicio de una respuesta citada';
 $s_plugin_EmailReporting_mail_strip_signature = 'Borrar firma del cuerpo del mensaje';
 $s_plugin_EmailReporting_mail_strip_signature_delim = 'Limitado por';
 $s_plugin_EmailReporting_mail_subject_id_regex = 'Qué tipo de búsqueda debe utilizarse para encontrar el id de la solicitud en el asunto';

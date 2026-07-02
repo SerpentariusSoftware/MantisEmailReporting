@@ -162,6 +162,22 @@ class Net_IMAPProtocol
 
 
     /**
+     * Last line read from the socket
+     * @var string
+     * @access private
+     */
+    var $lastline = '';
+
+
+    /**
+     * Parsed NAMESPACE response
+     * @var array
+     * @access private
+     */
+    var $_namespace = null;
+
+
+    /**
      * Constructor
      *
      * Instantiates a new Net_IMAP object.

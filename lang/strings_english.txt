@@ -72,6 +72,8 @@ $s_plugin_EmailReporting_mail_save_subject_in_note = 'Write the subject of the e
 $s_plugin_EmailReporting_mail_secured_script = 'Block this script from running via a webserver (recommended = "Yes")';
 $s_plugin_EmailReporting_mail_secured_ipaddr = 'Only allow access to bug_report_mail from this IP address';
 $s_plugin_EmailReporting_mail_strip_gmail_style_replies = 'Remove Gmail style replies (English only) from notes (mail_remove_replies should be YES)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines = 'Cut off quoted reply/history text once a run of \'>\' prefixed lines is found (works regardless of mail client or language)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines_min_lines = 'Minimum number of consecutive \'>\' prefixed lines required to be treated as the start of a quoted reply';
 $s_plugin_EmailReporting_mail_strip_signature = 'Strip signature from email body';
 $s_plugin_EmailReporting_mail_strip_signature_delim = 'Delimited by';
 $s_plugin_EmailReporting_mail_subject_id_regex = 'What kind of search should be used to find the issue id in the subject';

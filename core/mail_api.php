@@ -75,6 +75,8 @@ class ERP_mailbox_api
 	private $_mail_save_from;
 	private $_mail_save_subject_in_note;
 	private $_mail_strip_gmail_style_replies;
+	private $_mail_strip_quoted_lines;
+	private $_mail_strip_quoted_lines_min_lines;
 	private $_mail_strip_signature;
 	private $_mail_strip_signature_delim;
 	private $_mail_subject_id_regex;
@@ -129,6 +131,8 @@ class ERP_mailbox_api
 		$this->_mail_save_from					= plugin_config_get( 'mail_save_from' );
 		$this->_mail_save_subject_in_note		= plugin_config_get( 'mail_save_subject_in_note' );
 		$this->_mail_strip_gmail_style_replies	= plugin_config_get( 'mail_strip_gmail_style_replies' );
+		$this->_mail_strip_quoted_lines			= plugin_config_get( 'mail_strip_quoted_lines' );
+		$this->_mail_strip_quoted_lines_min_lines= plugin_config_get( 'mail_strip_quoted_lines_min_lines' );
 		$this->_mail_strip_signature			= plugin_config_get( 'mail_strip_signature' );
 		$this->_mail_strip_signature_delim		= plugin_config_get( 'mail_strip_signature_delim' );
 		$this->_mail_subject_id_regex			= plugin_config_get( 'mail_subject_id_regex' );
@@ -1624,6 +1628,15 @@ class ERP_mailbox_api
 			}
 		}
 
+		// Cut off quoted reply/history text once a run of '>' prefixed lines starts.
+		// Unlike mail_remove_replies_after/mail_strip_gmail_style_replies above, this
+		// works regardless of mail client or language, since virtually every client
+		// quotes replies with '>' prefixes.
+		if ( $this->_mail_strip_quoted_lines )
+		{
+			$t_description = $this->strip_quoted_lines( $t_description );
+		}
+
 		//append the mail removed notice.
 		if ( $t_description !== $p_description )
 		{
@@ -1631,6 +1644,43 @@ class ERP_mailbox_api
 		}
 
 		return( $t_description );
+	}
+
+	# --------------------
+	# Truncates the description at the start of the first run of at least
+	# _mail_strip_quoted_lines_min_lines consecutive '>' quoted lines.
+	# Leaves the description untouched if no such run is found.
+	private function strip_quoted_lines( $p_description )
+	{
+		$t_lines = preg_split( '/\r\n|\r|\n/', $p_description );
+
+		$t_quoted_run_start = NULL;
+		$t_quoted_run_length = 0;
+
+		foreach ( $t_lines AS $t_index => $t_line )
+		{
+			if ( preg_match( '/^\s{0,3}>+/', $t_line ) )
+			{
+				if ( $t_quoted_run_start === NULL )
+				{
+					$t_quoted_run_start = $t_index;
+				}
+
+				$t_quoted_run_length++;
+
+				if ( $t_quoted_run_length >= $this->_mail_strip_quoted_lines_min_lines )
+				{
+					return( implode( "\n", array_slice( $t_lines, 0, $t_quoted_run_start ) ) );
+				}
+			}
+			else
+			{
+				$t_quoted_run_start = NULL;
+				$t_quoted_run_length = 0;
+			}
+		}
+
+		return( $p_description );
 	}
 
 	# --------------------

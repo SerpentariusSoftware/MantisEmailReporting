@@ -29,6 +29,27 @@ class ConverterExtra extends Converter
     protected $row = 0;
 
     /**
+     * regex used to detect the start of a markdown table
+     *
+     * @var string
+     */
+    protected $tableLookaheadHeader;
+
+    /**
+     * regex fragment substituted per table cell when building tableLookaheadBody
+     *
+     * @var string
+     */
+    protected $tdSubstitute;
+
+    /**
+     * regex template used to detect the body rows of a markdown table
+     *
+     * @var string
+     */
+    protected $tableLookaheadBody;
+
+    /**
      * constructor, see Markdownify::Markdownify() for more information
      */
     public function __construct($linksAfterEachParagraph = self::LINK_AFTER_CONTENT, $bodyWidth = MDFY_BODYWIDTH, $keepHTML = MDFY_KEEPHTML)

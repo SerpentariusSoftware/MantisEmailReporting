@@ -72,6 +72,8 @@ $s_plugin_EmailReporting_mail_save_subject_in_note = 'Speichere den Betreff der 
 $s_plugin_EmailReporting_mail_secured_script = 'Blockiere dieses Script, so das es nicht via Webserver gestartet werden kann (Empfohlen = "Yes")';
 $s_plugin_EmailReporting_mail_secured_ipaddr = 'Erlaube Zugriff auf bug_report_mail nur von dieser IP Adresse';
 $s_plugin_EmailReporting_mail_strip_gmail_style_replies = 'Entferne Gmail Antwortstrukturen (Nur englisch) aus den Notizen (mail_remove_replies sollte YES sein)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines = 'Schneide zitierten Antwortverlauf ab, sobald eine Folge von mit \'>\' eingeleiteten Zeilen gefunden wird (unabhängig von Mailclient oder Sprache)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines_min_lines = 'Mindestanzahl aufeinanderfolgender, mit \'>\' eingeleiteter Zeilen, ab der ein zitierter Antwortblock erkannt wird';
 $s_plugin_EmailReporting_mail_strip_signature = 'Entferne Signaturen aus dem Mailbody';
 $s_plugin_EmailReporting_mail_strip_signature_delim = 'Abgetrennt durch';
 $s_plugin_EmailReporting_mail_subject_id_regex = 'Wie soll die TicketID im Betreff gefunden werden?';

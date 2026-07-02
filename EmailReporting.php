@@ -169,6 +169,14 @@ class EmailReportingPlugin extends MantisPlugin
 			//Strip Gmail style replies from body of the message
 			'mail_strip_gmail_style_replies'=> OFF,
 
+			# Cut off quoted reply/history text once a run of '>' prefixed lines is found.
+			# Works regardless of mail client or language, unlike mail_strip_gmail_style_replies.
+			'mail_strip_quoted_lines'		=> OFF,
+
+			# Minimum number of consecutive '>' prefixed lines required before it is
+			# treated as the start of a quoted reply block
+			'mail_strip_quoted_lines_min_lines'	=> 3,
+
 			#Removes the signature that are delimited by mail_strip_signature_delim
 			'mail_strip_signature'			=> OFF,
 

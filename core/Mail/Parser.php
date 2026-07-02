@@ -21,17 +21,22 @@ class ERP_Mail_Parser
 	private $_file;
 	private $_content;
 
-	private $_from;
-	private $_to;
-	private $_cc;
-	private $_subject;
-	private $_def_charset = 'auto';
+	private $_from = '';
+	private $_to = '';
+	private $_cc = '';
+	private $_subject = '';
+	// Candidate charsets tried (in order, strict mode) whenever the declared
+	// charset is missing or doesn't actually match the content. 'auto' used to be
+	// passed to mb_detect_encoding() here, but that isn't a real detection order -
+	// it reliably misidentified Central European (Hungarian, etc.) 8-bit content
+	// as ASCII, which then got mangled to '?' characters by mb_convert_encoding().
+	private $_def_charset = array( 'UTF-8', 'ISO-8859-2', 'ISO-8859-1', 'WINDOWS-1252', 'ASCII' );
 	private $_fallback_charset = 'ASCII';
-	private $_priority;
-	private $_messageid;
+	private $_priority = '';
+	private $_messageid = '';
 	private $_references = array();
-	private $_inreplyto;
-	private $_body;
+	private $_inreplyto = '';
+	private $_body = '';
 	private $_parts = array();
 	private $_ctype = array();
 
@@ -123,9 +128,14 @@ class ERP_Mail_Parser
 	{
 		if ( extension_loaded( 'mbstring' ) )
 		{
-			if ( $charset === NULL || $charset === 'auto' || !isset( $this->_mb_list_encodings[ strtolower( $charset ) ] ) )
+			// A declared charset is only trustworthy if the content actually validates
+			// against it. Mail clients frequently mislabel 8-bit content (e.g. tag
+			// Latin-2/Windows-1252 text as "us-ascii", or even "UTF-8" when it isn't) -
+			// blindly trusting the label is what turned accented characters into '?'.
+			if ( $charset === NULL || $charset === 'auto' || !isset( $this->_mb_list_encodings[ strtolower( $charset ) ] ) ||
+				!mb_check_encoding( $encode, $this->_mb_list_encodings[ strtolower( $charset ) ] ) )
 			{
-				$charset = mb_detect_encoding( $encode, $this->_def_charset );
+				$charset = mb_detect_encoding( $encode, $this->_def_charset, TRUE );
 			}
 
 			if ( $charset === FALSE )
@@ -146,7 +156,16 @@ class ERP_Mail_Parser
 
 			// Remove any invisible unicode control format characters
 			// https://www.fileformat.info/info/unicode/category/Cf/index.htm
-			$encode = preg_replace( '/\p{Cf}+/u', "", $encode );
+			// preg_replace() with the 'u' modifier returns NULL (not the original
+			// string) if $encode isn't valid UTF-8 - guard against that so malformed
+			// input degrades to "keep the original text" instead of silently
+			// discarding the whole body/header.
+			$t_stripped = preg_replace( '/\p{Cf}+/u', "", $encode );
+
+			if ( $t_stripped !== NULL )
+			{
+				$encode = $t_stripped;
+			}
 		}
 
 		return( $encode );

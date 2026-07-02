@@ -17,8 +17,8 @@
 		exit( 1 );
 	}
 
-	$t_remote_addr = trim( ( ( isset( $_SERVER[ 'REMOTE_ADDR' ] ) ) ? $_SERVER['REMOTE_ADDR'] : NULL ) );
-	$t_mail_secured_ipaddr = trim( plugin_config_get( 'mail_secured_ipaddr' ) );
+	$t_remote_addr = trim( ( ( isset( $_SERVER[ 'REMOTE_ADDR' ] ) ) ? $_SERVER['REMOTE_ADDR'] : '' ) );
+	$t_mail_secured_ipaddr = trim( plugin_config_get( 'mail_secured_ipaddr', '' ) );
 	if ( !is_blank( $t_mail_secured_ipaddr ) && !is_blank( $t_remote_addr ) )
 	{
 		if ( $t_remote_addr !== $t_mail_secured_ipaddr )
