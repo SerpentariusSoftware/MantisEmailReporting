@@ -1,4 +1,14 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.1 (this fork)
+	- Added scripts/patch_mantis_html_email.sh, an optional utility that patches
+	  MantisBT core (not this plugin) to send outgoing notification emails as HTML
+	  instead of plain text. Idempotent, takes timestamped backups. Written against
+	  and only tested with MantisBT 2.28.4, where email sending was restructured;
+	  not tested against other versions, and needs re-applying after a core upgrade
+	- Documented the new utility script, setup steps and full current feature set in
+	  the README
+	- Removed stray closing "?>" PHP tags from the language files
+
 Jul 2026 - EmailReporting-1.0.0 (this fork)
 	- PHP 8.0-8.4 compatibility: fixed a fatal parse error in the HTML-to-Markdown
 	  converter (duplicate "static $indent" declaration) that broke plugin load
