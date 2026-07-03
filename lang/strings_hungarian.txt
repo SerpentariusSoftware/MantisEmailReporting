@@ -1,0 +1,180 @@
+<?php
+$s_plugin_EmailReporting_plugin_title = 'Email Reporting';
+$s_plugin_EmailReporting_plugin_description = 'Bejövő e-mailek feldolgozása hibajegyekké és megjegyzésekké.';
+$s_plugin_EmailReporting_plugin_author = 'Indy és sokan mások utána.';
+
+$s_plugin_EmailReporting_manage = 'Kezelés';
+$s_plugin_EmailReporting_manage_config = 'Konfigurációs beállítások kezelése';
+$s_plugin_EmailReporting_manage_mailbox = 'Postafiókok kezelése';
+$s_plugin_EmailReporting_manage_rule = 'Szabályok kezelése';
+
+$s_plugin_EmailReporting_jobsetup = 'Ahhoz, hogy a leveleket beolvassa a postafiókokból, be kell állítania egy időzített feladatot, amely lefuttat egy szkriptet. A szkript 2 helyről futtatható, de csak az 1. lehetőség működik időzített feladatként. Mindkettő ugyanazt a feladatot végzi el. Lásd a dokumentációt példákért, hogyan kell ezt beütemezni.';
+$s_plugin_EmailReporting_job_users = '<span class="negative">Figyelmeztetés</span>: Úgy tűnik, hogy az időzített feladat nem ugyanazzal a felhasználói fiókkal fut, mint a webszerver / PHP folyamat. Ez problémákat okozhat a mellékletekkel.<br />Az időzített feladat SAPI-ja valószínűleg "cli".<br />A webszerver a következő felhasználói fiók alatt fut: ';
+
+$s_plugin_EmailReporting_mailbox_settings = 'Postafiók beállításai';
+$s_plugin_EmailReporting_mailbox_settings_imap = 'Csak IMAP postafiók beállítások';
+$s_plugin_EmailReporting_mailbox_settings_issue = 'Postafiók hibajegy beállításai';
+$s_plugin_EmailReporting_problems = 'Egy konfigurációs beállítás alapértelmezett értékre történő visszaállításához törölje a kérdéses beállítást a "<a href="adm_config_report.php">Konfigurációs jelentés</a>" oldalon.';
+
+$s_plugin_EmailReporting_rule_settings = 'Szabály beállításai';
+$s_plugin_EmailReporting_rule_conditions = 'Feltételek';
+$s_plugin_EmailReporting_rule_actions = 'Műveletek';
+$s_plugin_EmailReporting_rule_exceptions = 'Kivételek';
+
+$s_plugin_EmailReporting_attachment_feature_options = 'Mellékletek konfigurációs beállításai';
+$s_plugin_EmailReporting_debug_options = 'Hibakeresési konfigurációs beállítások';
+$s_plugin_EmailReporting_default_texts_options = 'Alapértelmezett szövegek konfigurációs beállításai';
+$s_plugin_EmailReporting_feature_options = 'Funkciók konfigurációs beállításai';
+$s_plugin_EmailReporting_priority_feature_options = 'Prioritás funkció konfigurációs beállításai';
+$s_plugin_EmailReporting_remove_reply_options = 'Válaszok eltávolításának konfigurációs beállításai';
+$s_plugin_EmailReporting_reporter_options = 'Hibajegy bejelentő konfigurációs beállításai';
+$s_plugin_EmailReporting_runtime_options = 'Futásidejű konfigurációs beállítások';
+$s_plugin_EmailReporting_security_options = 'Biztonsági konfigurációs beállítások';
+$s_plugin_EmailReporting_strip_signature_feature_options = 'Aláírás eltávolításának konfigurációs beállításai (Kísérleti)';
+
+$s_plugin_EmailReporting_copy_of = 'Másolat -';
+$s_plugin_EmailReporting_directory_exists = 'Könyvtár megtalálva';
+$s_plugin_EmailReporting_directory_unavailable = 'Figyelmeztetés: a könyvtár nem található';
+$s_plugin_EmailReporting_directory_writable = 'A könyvtár írható';
+$s_plugin_EmailReporting_directory_unwritable = 'Figyelmeztetés: a könyvtár nem írható';
+
+$s_plugin_EmailReporting_mail_add_bug_reports = 'Új hibajegyek létrehozása';
+$s_plugin_EmailReporting_mail_add_bugnotes = 'Megjegyzések hozzáadása';
+$s_plugin_EmailReporting_mail_add_complete_email = 'A teljes email hozzáadása a mellékletekhez';
+$s_plugin_EmailReporting_mail_add_users_from_cc_to = 'Felhasználók hozzáadása a hibajegy megfigyelő listájához a levél fejlécének Cc és Címzett mezőiből';
+$s_plugin_EmailReporting_mail_auto_signup = 'Új felhasználók automatikus regisztrálása (lehetséges biztonsági kockázat! lásd a dokumentációt)';
+$s_plugin_EmailReporting_mail_block_attachments_md5 = 'Ezekkel az MD5 hash-ekkel egyező mellékletek blokkolása';
+$s_plugin_EmailReporting_mail_block_attachments_logging = 'Blokkolt mellékletek naplózása az "Elutasított fájlok" listában';
+$s_plugin_EmailReporting_mail_bug_priority = 'Hibajegy prioritások besorolása';
+$s_plugin_EmailReporting_mail_debug = 'Hibakeresési mód';
+$s_plugin_EmailReporting_mail_debug_directory = 'Az email tartalmának mentése ebbe a könyvtárba, ha a hibakeresési mód aktív';
+$s_plugin_EmailReporting_mail_debug_show_memory_usage = 'Memóriahasználat megjelenítése az email feldolgozás különböző szakaszaiban';
+$s_plugin_EmailReporting_mail_delete = 'Feldolgozott email törlése a postafiókból';
+$s_plugin_EmailReporting_mail_disposable_email_checker = 'A MantisBT eldobható email cím ellenőrzőjének engedélyezése';
+$s_plugin_EmailReporting_mail_email_receive_own = 'Kapjanak-e a felhasználók emailt a saját műveleteikről (nem elérhető, ha email_receive_own = ON)';
+$s_plugin_EmailReporting_mail_fallback_mail_reporter = 'Alapértelmezett bejelentőre való visszaállás engedélyezése';
+$s_plugin_EmailReporting_mail_max_email_body = 'A hibajegyhez hozzáadott leírás vagy megjegyzés maximális mérete';
+$s_plugin_EmailReporting_mail_max_email_body_text = 'Ezt a szöveget használja, ha a leírás vagy megjegyzés csonkolva lett';
+$s_plugin_EmailReporting_mail_max_email_body_add_attach = 'A teljes leírás vagy megjegyzés hozzáadása mellékletként, ha az csonkolva lett';
+$s_plugin_EmailReporting_mail_nodescription = 'Ezt a szöveget használja, ha nem található leírás az emailben';
+$s_plugin_EmailReporting_mail_nosubject = 'Ezt a szöveget használja, ha nem található tárgy az emailben';
+$s_plugin_EmailReporting_mail_parse_html = 'HTML emailek feldolgozása';
+$s_plugin_EmailReporting_mail_preferred_username = 'Preferált felhasználónév új felhasználók létrehozásakor';
+$s_plugin_EmailReporting_mail_preferred_realname = 'Preferált valódi név új felhasználók létrehozásakor';
+$s_plugin_EmailReporting_mail_remove_mantis_email = 'MantisBT értesítő emailek eltávolítása a válaszokból';
+$s_plugin_EmailReporting_mail_remove_replies = 'Az összes válasz eltávolítása a megjegyzésekből';
+$s_plugin_EmailReporting_mail_remove_replies_after = 'Ezt a szöveget használja a válasz kezdetének azonosítására';
+$s_plugin_EmailReporting_mail_removed_reply_text = 'Ezt a szöveget használja, ha válaszok lettek eltávolítva az emailből';
+$s_plugin_EmailReporting_mail_reporter_id = 'Az emailben létrehozott hibajegyek alapértelmezett / tartalék bejelentő felhasználója';
+$s_plugin_EmailReporting_mail_rule_system = 'Szabályrendszer';
+$s_plugin_EmailReporting_mail_save_from = 'Az email küldőjének beírása a hibajegybe / megjegyzésbe';
+$s_plugin_EmailReporting_mail_save_subject_in_note = 'Az email tárgyának beírása a megjegyzésbe';
+$s_plugin_EmailReporting_mail_secured_script = 'A szkript futtatásának letiltása webszerveren keresztül (ajánlott = "Igen")';
+$s_plugin_EmailReporting_mail_secured_ipaddr = 'A bug_report_mail elérésének engedélyezése csak erről az IP-címről';
+$s_plugin_EmailReporting_mail_strip_gmail_style_replies = 'Gmail stílusú válaszok eltávolítása (csak angol nyelven) a megjegyzésekből (a mail_remove_replies legyen IGEN)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines = 'Az idézett válasz/előzmény szöveg levágása, amint egy \'>\' jellel kezdődő sorokból álló szakaszt talál (levelezőprogramtól és nyelvtől függetlenül működik)';
+$s_plugin_EmailReporting_mail_strip_quoted_lines_min_lines = 'Az egymást követő, \'>\' jellel kezdődő sorok minimális száma, amely az idézett válasz kezdetének minősül';
+$s_plugin_EmailReporting_mail_strip_signature = 'Aláírás eltávolítása az email törzséből';
+$s_plugin_EmailReporting_mail_strip_signature_delim = 'Elválasztva ezzel';
+$s_plugin_EmailReporting_mail_subject_id_regex = 'Milyen típusú keresést használjon a hibajegy azonosítójának megtalálásához a tárgyban';
+$s_plugin_EmailReporting_mail_use_bug_priority = 'Prioritás fejlécmező keresése';
+$s_plugin_EmailReporting_mail_use_message_id = 'A Message-ID használata a levél fejlécében a megjegyzések azonosításához';
+$s_plugin_EmailReporting_mail_use_reporter = 'Csak az alapértelmezett bejelentő felhasználó használata az emailben létrehozott hibajegyekhez';
+
+$s_plugin_EmailReporting_strict = 'Szigorú';
+$s_plugin_EmailReporting_balanced = 'Kiegyensúlyozott';
+$s_plugin_EmailReporting_relaxed = 'Megengedő';
+
+$s_plugin_EmailReporting_emailreporting = 'EmailReporting';
+$s_plugin_EmailReporting_mantisbt = 'MantisBT';
+
+$s_plugin_EmailReporting_newnote = 'Új megjegyzés';
+$s_plugin_EmailReporting_newissue = 'Új hibajegy';
+$s_plugin_EmailReporting_newattachment = 'Új melléklet';
+
+$s_plugin_EmailReporting_name = 'Név';
+$s_plugin_EmailReporting_full_from = 'Teljes "Feladó" cím';
+$s_plugin_EmailReporting_email_address = 'Email cím';
+$s_plugin_EmailReporting_email_no_domain = 'Email cím a domain név nélkül';
+$s_plugin_EmailReporting_from_ldap = 'LDAP-ból';
+
+$s_plugin_EmailReporting_mailboxes = 'Postafiókok';
+$s_plugin_EmailReporting_add_action = 'Hozzáadás';
+$s_plugin_EmailReporting_copy_action = 'Másolás';
+$s_plugin_EmailReporting_edit_action = 'Szerkesztés';
+$s_plugin_EmailReporting_delete_action = 'Törlés';
+$s_plugin_EmailReporting_test_action = 'Teszt';
+$s_plugin_EmailReporting_complete_test_action = 'Teljes teszt';
+$s_plugin_EmailReporting_select_mailbox = 'Postafiók kiválasztása';
+$s_plugin_EmailReporting_update_configuration = 'Konfiguráció frissítése';
+
+$s_plugin_EmailReporting_enabled = 'Engedélyezve';
+$s_plugin_EmailReporting_disabled = 'Letiltva';
+$s_plugin_EmailReporting_description = 'Leírás';
+$s_plugin_EmailReporting_mailbox_type = 'Postafiók típusa';
+$s_plugin_EmailReporting_hostname = 'Kiszolgáló neve';
+$s_plugin_EmailReporting_port = 'TCP port (opcionális)';
+$s_plugin_EmailReporting_encryption = 'Kapcsolat titkosítása';
+$s_plugin_EmailReporting_ssl_cert_verify = 'SSL tanúsítvány ellenőrzése';
+$s_plugin_EmailReporting_erp_username = 'Felhasználónév';
+$s_plugin_EmailReporting_erp_password = 'Jelszó';
+$s_plugin_EmailReporting_auth_method = 'Hitelesítési mód';
+$s_plugin_EmailReporting_imap_basefolder = 'Alapmappa (opcionális)';
+$s_plugin_EmailReporting_imap_createfolderstructure = 'Projekt almappa struktúra létrehozása';
+$s_plugin_EmailReporting_project_id = 'Projekt kiválasztása';
+$s_plugin_EmailReporting_global_category_id = 'Kategória kiválasztása';
+$s_plugin_EmailReporting_link_rules = 'Szabályok kiválasztása';
+
+$s_plugin_EmailReporting_mail_bug_priority_array_failure = 'A megadott formátum nem elfogadható tömb.';
+$s_plugin_EmailReporting_recorddisabled = '* = Letiltva';
+$s_plugin_EmailReporting_mbstring_unavailable = '<span class="negative">Figyelmeztetés</span>: A PHP mbstring kiterjesztés nem érhető el. Ez problémákat okozhat a beérkező emailekkel.';
+$s_plugin_EmailReporting_db_utf8_issue = 'Kérjük, javítsa az alább látható Collation problémákat, egyébként a MantisBT lekérdezési hibákat adhat vissza';
+$s_plugin_EmailReporting_missing_user = 'A kiválasztott felhasználó hiányzik. Kérjük, válasszon egy újat.';
+$s_plugin_EmailReporting_openssl_unavailable = 'A PHP OpenSSL kiterjesztés nem érhető el';
+$s_plugin_EmailReporting_test_failure = 'A művelet NEM sikerült';
+$s_plugin_EmailReporting_test_success = 'A művelet sikeres';
+$s_plugin_EmailReporting_unknown_setting = 'Ismeretlen beállítás. A beállítás figyelmen kívül hagyva: ';
+$s_plugin_EmailReporting_zero_records = 'Nincs elérhető';
+$s_plugin_EmailReporting_function_not_found = 'A funkció nem található';
+$s_plugin_EmailReporting_input_name_not_allowed = 'A kiválasztott változónév nem engedélyezett, mert bizonyos esetekben ütközést okozhat';
+$s_plugin_EmailReporting_pear_load_error = 'A pear.php betöltése sikertelen. Ennek oka lehet, hogy a biztonsági beállítások (open_basedir) nem engedélyezik a meglévő PEAR tár betöltését';
+$s_plugin_EmailReporting_complete_test_action_note = '<span class="negative">Figyelmeztetés</span>: Ez a lehető legteljesebb mértékben leteszteli az adott postafiókot, ellentétben a "Teszt" művelettel, amely csak azokat a feladatokat hajtja végre, amelyek nem változtatnak meg semmit.
+
+Még mindig vannak apró különbségek az időzített feladathoz (bug_report_mail.php) képest. Például az egyik különbség a feladatot futtató felhasználói fiók lehet.
+
+Óvatosan használja';
+$s_plugin_EmailReporting_apisoap_error = 'Az "api/soap/mc_file_api.php" hiányzik. Az EmailReportingnak szüksége van erre a fájlra a működéshez.';
+
+$s_plugin_EmailReporting_rules = 'Szabályok';
+$s_plugin_EmailReporting_select_rule = 'Szabály kiválasztása';
+
+$s_plugin_EmailReporting_rule_wildcards = 'Helyettesítő karakterek';
+$s_plugin_EmailReporting_rule_wildcards_help = '- Helyettesítő karakterek: * ?
+- Ha nem használ helyettesítő karaktereket, pontos egyezés kerül alkalmazásra';
+
+$s_plugin_EmailReporting_rule_conditions_help = 'NULL';
+
+$s_plugin_EmailReporting_rule_actions_help = '- A "[any]" azt jelenti, hogy a kérdéses művelet figyelmen kívül lesz hagyva
+- A létrehozott hibajegy projektjéhez nem kapcsolódó egyéni mezők figyelmen kívül lesznek hagyva
+- Az egyéni mezők legördülő listájának tartalmaznia kell egy üres értéket, ha azt az opciót szeretné a legördülő listában. Ellenkező esetben mindig egy érték kerül alkalmazásra, amikor a megadott feltételek teljesülnek.';
+
+$s_plugin_EmailReporting_rule_exceptions_help = 'NULL';
+
+$s_plugin_EmailReporting_cond_issue_creation_method = 'Hibajegy létrehozásának módja';
+$s_plugin_EmailReporting_cond_mailbox = 'Alkalmazás postafiókokra';
+$s_plugin_EmailReporting_cond_issue_issue_issuenote = 'Alkalmazás új hibajegyekre és/vagy megjegyzésekre';
+$s_plugin_EmailReporting_cond_issue_reporter = 'Hibajegy bejelentője';
+$s_plugin_EmailReporting_cond_issue_project = 'Hibajegy projektje';
+$s_plugin_EmailReporting_cond_issue_category = 'Hibajegy kategóriája';
+$s_plugin_EmailReporting_cond_issue_priority = 'Hibajegy prioritása';
+$s_plugin_EmailReporting_cond_issue_summary = 'Hibajegy összefoglalója';
+$s_plugin_EmailReporting_cond_issue_description = 'Hibajegy leírása';
+
+$s_plugin_EmailReporting_act_issue_severity = 'Súlyosság frissítése';
+$s_plugin_EmailReporting_act_issue_status = 'Állapot frissítése';
+$s_plugin_EmailReporting_act_issue_category = 'Kategória frissítése';
+$s_plugin_EmailReporting_act_issue_tag = 'Címkék hozzáadása';
+$s_plugin_EmailReporting_act_issue_custom_field = 'Egyéni mező frissítése';
+
+$s_plugin_EmailReporting_excep_issue_summary = 'Hibajegy összefoglalója';
+$s_plugin_EmailReporting_excep_issue_description = 'Hibajegy leírása';
