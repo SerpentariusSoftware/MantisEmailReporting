@@ -1,4 +1,9 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.4 (this fork)
+	- Updated plugin author and website to Herczeg Szilard @ Serpentarius
+	  (https://serpentarius.hu/) across all language files and the plugin
+	  registration
+
 Jul 2026 - EmailReporting-1.0.3 (this fork)
 	- Added Hungarian translation (lang/strings_hungarian.txt), covering all 150
 	  plugin language strings

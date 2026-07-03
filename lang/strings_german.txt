@@ -1,7 +1,7 @@
 <?php
 $s_plugin_EmailReporting_plugin_title = 'Email Reporting';
 $s_plugin_EmailReporting_plugin_description = 'Eingehende Mails zu Tickets und Notizen verarbeiten.';
-$s_plugin_EmailReporting_plugin_author = 'Indy und diverse weitere Entwickler.';
+$s_plugin_EmailReporting_plugin_author = 'Herczeg Szilard @ Serpentarius';
 
 $s_plugin_EmailReporting_manage = 'Anpassen';
 $s_plugin_EmailReporting_manage_config = 'Konfiguration anpassen';

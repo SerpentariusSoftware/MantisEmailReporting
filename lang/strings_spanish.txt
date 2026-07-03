@@ -1,7 +1,7 @@
 <?php
 $s_plugin_EmailReporting_plugin_title = 'Reportes por Email';
 $s_plugin_EmailReporting_plugin_description = 'Ofrece la funcionalidad de crear notas y realizar solicitudes por Email';
-$s_plugin_EmailReporting_plugin_author = 'Indy y varias personas despues de él.';
+$s_plugin_EmailReporting_plugin_author = 'Herczeg Szilard @ Serpentarius';
 
 $s_plugin_EmailReporting_manage = 'Administrar';
 $s_plugin_EmailReporting_manage_config = 'Administrar Opciones de Configuración';

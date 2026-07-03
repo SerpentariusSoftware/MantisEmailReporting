@@ -1,7 +1,7 @@
 <?php
 $s_plugin_EmailReporting_plugin_title = 'Email Reporting';
 $s_plugin_EmailReporting_plugin_description = 'Bejövő e-mailek feldolgozása hibajegyekké és megjegyzésekké.';
-$s_plugin_EmailReporting_plugin_author = 'Indy és sokan mások utána.';
+$s_plugin_EmailReporting_plugin_author = 'Herczeg Szilard @ Serpentarius';
 
 $s_plugin_EmailReporting_manage = 'Kezelés';
 $s_plugin_EmailReporting_manage_config = 'Konfigurációs beállítások kezelése';

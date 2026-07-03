@@ -11,14 +11,14 @@ class EmailReportingPlugin extends MantisPlugin
 		$this->description = plugin_lang_get( 'plugin_description' );
 		$this->page = 'manage_config';
 
-		$this->version = '1.0.3';
+		$this->version = '1.0.4';
 		$this->requires = array(
 			'MantisCore' => '1.3.0, <2.99.99',
 		);
 
 		$this->author = plugin_lang_get( 'plugin_author' );
 		$this->contact = '';
-		$this->url = 'http://www.mantisbt.org/wiki/doku.php/mantisbt:plugins:emailreporting';
+		$this->url = 'https://serpentarius.hu/';
 	}
 
 	/**
