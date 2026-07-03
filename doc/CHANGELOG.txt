@@ -1,4 +1,8 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.3 (this fork)
+	- Added Hungarian translation (lang/strings_hungarian.txt), covering all 150
+	  plugin language strings
+
 Jul 2026 - EmailReporting-1.0.2 (this fork)
 	- Added a GPL-2.0 LICENSE file (matching the original plugin and MantisBT
 	  itself), and a README section pointing to it and noting the separate
