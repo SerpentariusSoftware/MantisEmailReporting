@@ -148,6 +148,17 @@ On top of the official 0.10.1 release, this copy includes:
   email that `relationship_add()` already performs internally — resulting in duplicate
   history entries on both issues and a duplicate notification email to the new issue's
   watchers. The manual duplicate calls have been removed.
+* **Fixed a false-positive "Manage EmailReporting" database collation report.** The
+  built-in collation check compared collation names against the literal string
+  `"utf8_"`, which stopped matching once MySQL/MariaDB started naming these collations
+  `utf8mb3_*`/`utf8mb4_*` — so it flagged every single table and column as `BAD`
+  regardless of actual collation, including ones already on the better `utf8mb4`. It
+  now correctly recognizes any UTF-8-family collation.
+* **Updated the "scheduled job" hint on "Manage EmailReporting"** to recommend
+  `scripts/bug_report_mail_cron.sh` (this fork's failure-alerting wrapper, see above)
+  instead of only listing the two raw ways to invoke `bug_report_mail.php` directly,
+  and clarified that the second option is for a one-off manual test, not for
+  scheduling.
 
 Feature set
 ===========

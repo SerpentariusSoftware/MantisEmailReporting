@@ -122,6 +122,19 @@ or via command line interface
 
 This line fetches bug reports via POP3 or IMAP every 5 minutes.
 
+Recommended (this fork): instead of calling bug_report_mail.php directly from
+cron, point cron at scripts/bug_report_mail_cron.sh instead:
+*/5 *   *   *   * /path/to/mantis/plugins/EmailReporting/scripts/bug_report_mail_cron.sh
+It runs the same script, but also emails you (via sendmail) if the job crashes
+or if any individual mailbox fails to process (bad login, connection refused,
+disabled mailbox, wrong project, etc.) - failures that would otherwise go
+unnoticed, since bug_report_mail.php's own exit code used to always report
+success regardless of whether any mailbox actually succeeded. Repeat alerts
+for an ongoing failure are held off for ALERT_COOLDOWN_SECONDS (default 6
+hours) so a persistent failure doesn't send one email per run. See the
+README's Setup section for the one-time bug_report_mail_cron.env setup this
+requires.
+
 Windows or similar OS:
 Via webserver (see settings because this is disabled by default, see plugin
 config page in mantis)
