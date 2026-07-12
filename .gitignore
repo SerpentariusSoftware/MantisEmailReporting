@@ -1,2 +1,3 @@
 .claude/
 scripts/bug_report_mail_cron.env
+scripts/.bug_report_mail_cron_last_alert

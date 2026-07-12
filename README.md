@@ -13,8 +13,9 @@ and the [Changelog](doc/CHANGELOG.txt) for details.
 
 Requirements (this fork)
 =========================
-* MantisBT 1.3.0 or higher (same as upstream 0.10.x). **Compatible and tested with
-  MantisBT 2.28.4.**
+* **MantisBT 2.0.0 or higher.** Older MantisBT versions (pre-2.0, using the old
+  `html_page_top`/`html_page_bottom`/`print_bracket_link` layout API) are no longer
+  supported by this fork — see below. **Compatible and tested with MantisBT 2.28.4.**
 * **PHP 8.0 or higher.** Older PHP versions are no longer supported by this fork —
   see the PHP 8 compatibility work below.
 * `/api/soap/mc_file_api.php` must be present (standard MantisBT SOAP API file)
@@ -34,10 +35,12 @@ Setup
    ```
    See `doc/INSTALL.txt` for the full set of scheduling notes (webserver-triggered
    alternative, Windows scheduling, etc.) — those are unchanged from upstream.
-5. **Optional but recommended: cron failure alerting.** Since PHP fatal errors halt
-   the script silently as far as cron is concerned, this fork adds
-   `scripts/bug_report_mail_cron.sh`, a wrapper that emails you if the job fails (or,
-   with `-s`, also when it succeeds — handy for testing the alert itself):
+5. **Optional but recommended: cron failure alerting.** Since PHP fatal errors — and,
+   as of this fork, a mailbox that fails to process (bad login, connection refused,
+   disabled mailbox, wrong project, etc.) — would otherwise go unnoticed as far as
+   cron is concerned, this fork adds `scripts/bug_report_mail_cron.sh`, a wrapper that
+   emails you if the job fails (or, with `-s`, also when it succeeds — handy for
+   testing the alert itself):
    ```
    cd mantis/plugins/EmailReporting/scripts
    cp bug_report_mail_cron.env.example bug_report_mail_cron.env
@@ -52,6 +55,10 @@ Setup
    committed) — copy it fresh from the `.example` file on each server you deploy to.
    The wrapper sends mail via `sendmail`, so a working local MTA (or `sendmail`-compatible
    relay such as Postfix, Exim, or msmtp) is required for alerts to actually be delivered.
+   Since this typically runs every few minutes, a persistent failure won't send one
+   email per run — once an alert is sent, further alerts are held off for
+   `ALERT_COOLDOWN_SECONDS` (default 6 hours) until the job either succeeds again or
+   the cooldown elapses.
 
 Utility scripts
 ================
@@ -120,9 +127,27 @@ On top of the official 0.10.1 release, this copy includes:
   emailed-in issues used the site/project default visibility regardless of the
   target project; new issues now inherit `VS_PRIVATE` when the target project itself
   is private.
-* **New: cron failure alerting.** `scripts/bug_report_mail_cron.sh` wraps the
-  scheduled job and emails you (via `sendmail`) if it fails, so a broken mailbox or a
-  PHP error doesn't fail silently. See [Setup](#setup) above.
+* **New: cron failure alerting, including per-mailbox failures.** `scripts/bug_report_mail_cron.sh`
+  wraps the scheduled job and emails you (via `sendmail`) if it fails. `bug_report_mail.php`
+  itself now also exits non-zero if any individual mailbox failed to process (bad
+  login, connection refused, disabled mailbox, wrong project, etc.) — previously such
+  failures were only echoed into the job's own output and never surfaced as a failure,
+  so a broken mailbox could go unnoticed indefinitely. Repeat alerts for an ongoing
+  failure are held off for `ALERT_COOLDOWN_SECONDS` (default 6 hours) so a persistent
+  failure doesn't send one email per cron run. See [Setup](#setup) above.
+* **Dropped MantisBT 1.x compatibility.** Removed the legacy pre-2.0 layout code paths
+  (`html_page_top`/`html_page_bottom`/`print_bracket_link`, none of which exist in
+  MantisBT 2.x), which were dead weight given this fork already requires MantisBT
+  2.0.0+. Also fixed a live bug this cleanup surfaced: `manage_config_edit.php` called
+  `print_bracket_link()` unconditionally (not behind the legacy-version check), which
+  no longer exists in MantisBT 2.x and threw a fatal error whenever the "Bug priority
+  mapping" config field failed validation on save.
+* **Fixed duplicate relationship history/email on reply-linked issues.** When a reply
+  links a new issue to an existing "master" bug, the plugin called MantisBT's
+  `relationship_add()` and then manually repeated the history logging and notification
+  email that `relationship_add()` already performs internally — resulting in duplicate
+  history entries on both issues and a duplicate notification email to the new issue's
+  watchers. The manual duplicate calls have been removed.
 
 Feature set
 ===========

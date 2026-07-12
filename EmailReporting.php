@@ -11,9 +11,9 @@ class EmailReportingPlugin extends MantisPlugin
 		$this->description = plugin_lang_get( 'plugin_description' );
 		$this->page = 'manage_config';
 
-		$this->version = '1.0.4';
+		$this->version = '1.0.5';
 		$this->requires = array(
-			'MantisCore' => '1.3.0, <2.99.99',
+			'MantisCore' => '2.0.0, <2.99.99',
 		);
 
 		$this->author = plugin_lang_get( 'plugin_author' );
@@ -30,7 +30,6 @@ class EmailReportingPlugin extends MantisPlugin
 			'reset_schema'					=> 0,
 			'config_version'				=> 0,
 			'schema'						=> -1,
-			'mantisbt_version'				=> (int) trim( MANTIS_VERSION )[ 0 ],
 			'job_users'						=> array(),
 
 			# --- mail reporting settings -----
@@ -231,10 +230,8 @@ class EmailReportingPlugin extends MantisPlugin
 
 			$t_email = '';
 
-			$t_seed = $t_email . $t_username;
-
 			# Create random password
-			$t_password = auth_generate_random_password( $t_seed );
+			$t_password = auth_generate_random_password();
 
 			# create the user
 			$t_result_user_create = user_create( $t_username, $t_password, $t_email, config_get_global( 'report_bug_threshold' ), FALSE, TRUE, 'Mail Reporter', plugin_lang_get( 'plugin_title' ) );

@@ -69,18 +69,33 @@
 
 	$GLOBALS[ $t_mailbox_api_index ] = new ERP_mailbox_api;
 
+	$t_failed_mailboxes = 0;
+
 	foreach ( $GLOBALS[ 't_mailboxes' ] as $t_mailbox )
 	{
-		$GLOBALS[ $t_mailbox_api_index ]->process_mailbox( $t_mailbox );
+		$t_result = $GLOBALS[ $t_mailbox_api_index ]->process_mailbox( $t_mailbox );
+
+		$t_is_custom_error = ( is_array( $t_result ) && isset( $t_result[ 'ERROR_TYPE' ] ) && $t_result[ 'ERROR_TYPE' ] === 'NON-PEAR-ERROR' )
+			|| ( is_bool( $t_result ) && $t_result === FALSE );
+
+		if ( $t_is_custom_error || PEAR::isError( $t_result ) )
+		{
+			$t_failed_mailboxes++;
+		}
 	}
 
 	echo "\n\n" . 'Done checking all mailboxes' . "\n";
+
+	if ( $t_failed_mailboxes > 0 )
+	{
+		echo $t_failed_mailboxes . ' mailbox(es) failed to process, see errors above' . "\n";
+	}
 
 	if ( php_sapi_name() !== 'cli' )
 	{
 		echo '</pre>';
 	}
 
-	exit( 0 );
+	exit( ( $t_failed_mailboxes > 0 ) ? 1 : 0 );
 ?>
 

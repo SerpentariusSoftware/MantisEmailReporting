@@ -102,21 +102,10 @@
 	# Page header en beginning.
 	function ERP_page_begin( $p_page = '' )
 	{
-		// pre-MantisBT 2.0.x
-		if ( plugin_config_get( 'mantisbt_version' ) === 1 )
-		{
-			html_page_top( plugin_lang_get( 'plugin_title' ) );
-			print_manage_menu( plugin_page( $p_page ) );
-			ERP_print_menu( $p_page );
-		}
-		// MantisBT 2.0.x
-		else
-		{
-			layout_page_header( plugin_lang_get( 'plugin_title' ) );
-			layout_page_begin( 'manage_overview_page.php' );
-			print_manage_menu( plugin_page( $p_page ) );
-			ERP_print_menu( $p_page );
-		}
+		layout_page_header( plugin_lang_get( 'plugin_title' ) );
+		layout_page_begin( 'manage_overview_page.php' );
+		print_manage_menu( plugin_page( $p_page ) );
+		ERP_print_menu( $p_page );
 ?>
 <div class="col-md-12 col-xs-12">
 <div class="space-10"></div>
@@ -131,16 +120,7 @@
 <div class="space-10"></div>
 </div>
 <?php
-		// pre-MantisBT 2.0.x
-		if ( plugin_config_get( 'mantisbt_version' ) === 1 )
-		{
-			html_page_bottom( $p_page );
-		}
-		// MantisBT 2.0.x
-		else
-		{
-			layout_page_end();
-		}
+		layout_page_end();
 	}
 
 	# --------------------
@@ -251,23 +231,12 @@
 						$t_page_lang = $t_page_name;
 					}
 
-					// pre-MantisBT 2.0.x
-					if ( plugin_config_get( 'mantisbt_version' ) === 1 )
-					{
-						$t_page = ( ( $p_page !== $t_page_name ) ? plugin_page( $t_page_name ) : NULL );
-
-						print_bracket_link( $t_page, $t_lang_function( $t_page_lang ) );
-					}
-					// MantisBT 2.0.x
-					else
-					{
-						$t_active = ( ( $t_page_name === $p_page ) ? ' active' : '' );
+					$t_active = ( ( $t_page_name === $p_page ) ? ' active' : '' );
 ?>
 <a class="btn btn-sm btn-white btn-primary<?php echo $t_active ?>" href="<?php echo plugin_page( $t_page_name ) ?>">
 <?php echo $t_lang_function( $t_page_lang ) ?>
 </a>
 <?php
-					}
 				}
 			}
 ?>

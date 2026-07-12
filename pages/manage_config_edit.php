@@ -72,7 +72,7 @@ else
 
 	echo '<br /><div class="center">';
 	echo plugin_lang_get( 'mail_bug_priority_array_failure' ) . ' ';
-	print_bracket_link( plugin_page( 'manage_config', TRUE ), lang_get( 'proceed' ) );
+	print_small_button( plugin_page( 'manage_config', TRUE ), lang_get( 'proceed' ) );
 	echo '</div>';
 
 	$t_notsuccesfull = TRUE;

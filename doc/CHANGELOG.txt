@@ -1,4 +1,31 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.5 (this fork)
+	- bug_report_mail.php now exits non-zero if any mailbox failed to process
+	  (bad login, connection refused, disabled mailbox, wrong project, etc.);
+	  previously such failures were only echoed into the job's output and never
+	  caused a non-zero exit, so bug_report_mail_cron.sh's failure alerting never
+	  fired for them - a broken mailbox could go unnoticed indefinitely
+	- Added ALERT_COOLDOWN_SECONDS to bug_report_mail_cron.sh (default 6 hours) so
+	  a persistent failure doesn't send one alert email per cron run; resets on
+	  the next successful run
+	- Fixed ERP_mailbox_api::process_mailbox() not resetting its internal result
+	  state per call, which could leak an earlier mailbox's error into a later,
+	  successful mailbox's reported result within the same run
+	- Dropped MantisBT 1.x compatibility (now requires MantisBT 2.0.0+); removed
+	  the legacy pre-2.0 layout code paths (html_page_top/html_page_bottom/
+	  print_bracket_link), which no longer exist in MantisBT 2.x
+	- Fixed a fatal error in manage_config_edit.php: it called the now-removed
+	  print_bracket_link() unconditionally (not behind the legacy-version check),
+	  which threw whenever the "Bug priority mapping" config field failed
+	  validation on save
+	- Fixed duplicate relationship history entries and a duplicate notification
+	  email sent when a reply links a new issue to an existing "master" bug -
+	  the plugin was manually repeating history logging/email that MantisBT's
+	  relationship_add() already performs internally
+	- Removed a dead argument to auth_generate_random_password() (the current
+	  MantisBT function takes no parameters and always returns a random nonce;
+	  the seed value was silently ignored)
+
 Jul 2026 - EmailReporting-1.0.4 (this fork)
 	- Updated plugin author and website to Herczeg Szilard @ Serpentarius
 	  (https://serpentarius.hu/) across all language files and the plugin
