@@ -8,7 +8,8 @@ $s_plugin_EmailReporting_manage_config = 'Manage Configuration Options';
 $s_plugin_EmailReporting_manage_mailbox = 'Manage Mailboxes';
 $s_plugin_EmailReporting_manage_rule = 'Manage Rules';
 
-$s_plugin_EmailReporting_jobsetup = 'To collect the emails from the mailboxes you need to add a scheduled job which runs a script. You can run the script from 2 locations but only option 1 will work as a scheduled job. Both perform the same tasks. See the documentation for examples on how to schedule these.';
+$s_plugin_EmailReporting_jobsetup = 'To collect the emails from the mailboxes you need to add a scheduled job which runs a script. You can run the script from 2 locations, but only option 1 can be scheduled via cron; option 2 runs the same job through the browser instead, useful for a one-off manual test. See the documentation for examples on how to schedule these.';
+$s_plugin_EmailReporting_jobsetup_cron_recommended = 'Recommended: point your cron job at <code>scripts/bug_report_mail_cron.sh</code> in this plugin\'s folder instead of calling option 1 directly. It runs the same script, but also emails you if a mailbox fails or the job crashes, holding off repeat alerts for a few hours so a persistent failure does not flood your inbox.';
 $s_plugin_EmailReporting_job_users = '<span class="negative">Warning</span>: It seems that the scheduled job is not run with the same user account as the webserver / PHP process. This could cause problems with attachments.<br />The SAPI for the scheduled job is most likely "cli".<br />The webserver runs under the following user account: ';
 
 $s_plugin_EmailReporting_mailbox_settings = 'Mailbox settings';

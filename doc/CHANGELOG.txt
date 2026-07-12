@@ -25,6 +25,18 @@ Jul 2026 - EmailReporting-1.0.5 (this fork)
 	- Removed a dead argument to auth_generate_random_password() (the current
 	  MantisBT function takes no parameters and always returns a random nonce;
 	  the seed value was silently ignored)
+	- Fixed the database collation check on "Manage EmailReporting" flagging
+	  every single table/column as BAD regardless of actual collation. It
+	  compared against the literal string "utf8_", which stopped matching once
+	  MySQL/MariaDB started naming these collations utf8mb3_*/utf8mb4_* - so the
+	  check has been failing on every real-world server, including tables
+	  already on utf8mb4. Now correctly recognizes any utf8-family collation
+	  (utf8_, utf8mb3_, utf8mb4_) as OK
+	- Updated the "scheduled job" hint on "Manage EmailReporting" to recommend
+	  scripts/bug_report_mail_cron.sh (this fork's failure-alerting wrapper)
+	  instead of only showing the two raw ways to invoke bug_report_mail.php
+	  directly, and clarified that the second option is for a one-off manual
+	  test, not for scheduling
 
 Jul 2026 - EmailReporting-1.0.4 (this fork)
 	- Updated plugin author and website to Herczeg Szilard @ Serpentarius

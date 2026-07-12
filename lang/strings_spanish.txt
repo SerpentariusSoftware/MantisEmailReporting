@@ -8,7 +8,8 @@ $s_plugin_EmailReporting_manage_config = 'Administrar Opciones de Configuración
 $s_plugin_EmailReporting_manage_mailbox = 'Administrar Buzones';
 $s_plugin_EmailReporting_manage_rule = 'Administrar Reglas';
 
-$s_plugin_EmailReporting_jobsetup = 'Para recolectar los emails de los buzones, necesitas agregar una tarea programada que ejecute el script. Puedes ejecutar el script desde 2 sitios pero solo uno trabajaria desde una tarea programada. Ambos realizan la misma tarea. Vé la documentación para ejemplos de como se pueden programar.';
+$s_plugin_EmailReporting_jobsetup = 'Para recolectar los emails de los buzones, necesitas agregar una tarea programada que ejecute el script. Puedes ejecutar el script desde 2 sitios, pero solo la opción 1 puede programarse mediante cron; la opción 2 ejecuta la misma tarea a través del navegador, útil para una prueba manual puntual. Vé la documentación para ejemplos de como se pueden programar.';
+$s_plugin_EmailReporting_jobsetup_cron_recommended = 'Recomendado: configura tu tarea programada para que apunte a <code>scripts/bug_report_mail_cron.sh</code>, dentro de la carpeta de este plugin, en lugar de llamar directamente a la opción 1. Ejecuta el mismo script, pero además te envía un email si un buzón falla o la tarea se detiene con un error, reteniendo alertas repetidas durante unas horas para que un fallo persistente no inunde tu bandeja de entrada.';
 $s_plugin_EmailReporting_job_users = '<span class="negative">Advertencia</span>: Parece que la tarea programada no se ejecuta con la misma cuenta de usuario que el webserver o proceso PHP. Esto puede causar problemas con los adjuntos.<br />The SAPI for the scheduled job is most likely "cli".<br />El webserver se ejecuta bajo la siguiente cuenta de usuario: ';
 
 $s_plugin_EmailReporting_mailbox_settings = 'Configuración de Buzón';

@@ -8,7 +8,8 @@ $s_plugin_EmailReporting_manage_config = 'Konfigurációs beállítások kezelé
 $s_plugin_EmailReporting_manage_mailbox = 'Postafiókok kezelése';
 $s_plugin_EmailReporting_manage_rule = 'Szabályok kezelése';
 
-$s_plugin_EmailReporting_jobsetup = 'Ahhoz, hogy a leveleket beolvassa a postafiókokból, be kell állítania egy időzített feladatot, amely lefuttat egy szkriptet. A szkript 2 helyről futtatható, de csak az 1. lehetőség működik időzített feladatként. Mindkettő ugyanazt a feladatot végzi el. Lásd a dokumentációt példákért, hogyan kell ezt beütemezni.';
+$s_plugin_EmailReporting_jobsetup = 'Ahhoz, hogy a leveleket beolvassa a postafiókokból, be kell állítania egy időzített feladatot, amely lefuttat egy szkriptet. A szkript 2 helyről futtatható, de csak az 1. lehetőség állítható be időzített feladatként; a 2. lehetőség ugyanezt a feladatot futtatja le a böngészőn keresztül, egyszeri kézi teszteléshez hasznos. Lásd a dokumentációt példákért, hogyan kell ezt beütemezni.';
+$s_plugin_EmailReporting_jobsetup_cron_recommended = 'Javasolt: az időzített feladatban az 1. lehetőség közvetlen hívása helyett a beépülő modul mappájában található <code>scripts/bug_report_mail_cron.sh</code> szkriptet állítsa be. Ez ugyanazt a szkriptet futtatja le, de emailben is értesít, ha egy postafiók feldolgozása sikertelen, vagy a feladat hibával leáll; az ismételt riasztásokat pár órára visszatartja, hogy egy tartós hiba ne árassza el a postafiókját.';
 $s_plugin_EmailReporting_job_users = '<span class="negative">Figyelmeztetés</span>: Úgy tűnik, hogy az időzített feladat nem ugyanazzal a felhasználói fiókkal fut, mint a webszerver / PHP folyamat. Ez problémákat okozhat a mellékletekkel.<br />Az időzített feladat SAPI-ja valószínűleg "cli".<br />A webszerver a következő felhasználói fiók alatt fut: ';
 
 $s_plugin_EmailReporting_mailbox_settings = 'Postafiók beállításai';

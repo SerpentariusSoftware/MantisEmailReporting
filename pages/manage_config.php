@@ -21,6 +21,7 @@ ERP_print_documentation_link( 'setting_up_a_scheduled_cron_job_for_emailreportin
 	<li><a href="<?php echo $t_link1 ?>"><?php echo $t_link1 ?></a></li>
 	<li><a href="<?php echo $t_link2 ?>"><?php echo $t_link2 ?></a></li>
 </ol>
+<p><i class="fa fa-check-circle"></i> <?php echo plugin_lang_get( 'jobsetup_cron_recommended' ) ?></p>
 <?php
 ERP_output_note_close();
 
