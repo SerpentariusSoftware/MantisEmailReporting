@@ -1,6 +1,6 @@
 # MantisBT EmailReporting Plugin
 
-**Version 1.0.0** (this fork)
+**Version 1.0.6** (this fork)
 
 The EmailReporting plugin allows you to report an issue in MantisBT by sending an
 email to a particular mail account. It can also add notes/attachments to an existing

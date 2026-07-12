@@ -1,5 +1,5 @@
 Changelog:
-Jul 2026 - EmailReporting-1.0.5 (this fork)
+Jul 2026 - EmailReporting-1.0.6 (this fork)
 	- bug_report_mail.php now exits non-zero if any mailbox failed to process
 	  (bad login, connection refused, disabled mailbox, wrong project, etc.);
 	  previously such failures were only echoed into the job's output and never
