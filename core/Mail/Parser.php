@@ -174,6 +174,7 @@ class ERP_Mail_Parser
 	private function process_header_encoding( $encode )
 	{
 		$use_fallback = FALSE;
+		$t_found_encoded_word = FALSE;
 		if ( extension_loaded( 'mbstring' ) )
 		{
 			$t_encode = $encode;
@@ -181,6 +182,8 @@ class ERP_Mail_Parser
 			$encoded_words_regex = "/(=\?([^?]+)\?(q|b)\?([^?]*)\?=)/i";
 			while ( preg_match( $encoded_words_regex, $t_encode, $matches ) )
 			{
+				$t_found_encoded_word = TRUE;
+
 				$encoded  = $matches[1];
 				$charset  = $matches[2];
 				$encoding = $matches[3];
@@ -203,17 +206,56 @@ class ERP_Mail_Parser
 				if ( strtolower( $encoding ) === 'q' )
 				{
 					$text = str_replace( '_', ' ', $text );
+					$t_raw_bytes = quoted_printable_decode( $text );
+				}
+				else
+				{
+					$t_raw_bytes = base64_decode( $text );
 				}
 
-				$encode_part = mb_decode_mimeheader( '=?' . $charset . '?' . $encoding . '?' . $text . '?=' );
+				// An encoded-word's declared charset is only trustworthy if the decoded
+				// bytes actually validate against it - mail clients/webmail gateways
+				// frequently mislabel the charset of an encoded word (e.g. tag
+				// ISO-8859-2 text as "UTF-8"). Blindly trusting the label is what let
+				// mb_decode_mimeheader() silently substitute '?' for every unmappable
+				// accented character, mirroring the fix already applied to the body
+				// in process_body_encoding().
+				$t_charset_name = $this->_mb_list_encodings[ strtolower( $charset ) ];
+
+				if ( !mb_check_encoding( $t_raw_bytes, $t_charset_name ) )
+				{
+					$t_detected = mb_detect_encoding( $t_raw_bytes, $this->_def_charset, TRUE );
+
+					if ( $t_detected !== FALSE )
+					{
+						$t_charset_name = $this->_mb_list_encodings[ strtolower( $t_detected ) ];
+					}
+				}
+
+				$encode_part = mb_convert_encoding( $t_raw_bytes, $this->_encoding, $t_charset_name );
+
+				if ( $encode_part === FALSE )
+				{
+					$encode_part = $t_raw_bytes;
+				}
 
 				$t_encode = str_replace( $encoded, $encode_part, $t_encode );
 			}
 
-			// If any encoded-words are left then mb_decode_mimeheader did not work as intended. Performing fallback
+			// If any encoded-words are left then decoding did not work as intended. Performing fallback
 			if ( preg_match( $encoded_words_regex, $t_encode ) )
 			{
 				$use_fallback = TRUE;
+			}
+
+			// Headers without any RFC 2047 encoded-word never go through the charset
+			// handling above. Some non-compliant clients send raw 8-bit header bytes
+			// with no "=?charset?...?=" wrapper at all - run them through the same
+			// validate-then-detect logic used for the body so they don't degrade to
+			// '?' once mb_substr()/mb_internal_encoding() touch them downstream.
+			if ( !$t_found_encoded_word && !mb_check_encoding( $t_encode, $this->_encoding ) )
+			{
+				$t_encode = $this->process_body_encoding( $t_encode, NULL );
 			}
 		}
 

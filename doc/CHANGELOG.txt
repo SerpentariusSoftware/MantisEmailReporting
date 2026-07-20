@@ -1,4 +1,16 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.7 (this fork)
+	- Fixed accented characters (e.g. Hungarian o-double-acute/u-double-acute)
+	  in the email SUBJECT turning into '?' - process_header_encoding() trusted
+	  an RFC 2047 encoded-word's declared charset unconditionally, so a mail
+	  client/webmail gateway mislabeling the charset (e.g. tagging ISO-8859-2
+	  text as UTF-8) made mb_decode_mimeheader() silently substitute '?' for
+	  every unmappable character. Header decoding now validates the declared
+	  charset against the actual bytes and falls back to detection, mirroring
+	  the fix already applied to the body in 1.0.0. Raw, non-RFC2047 8-bit
+	  subjects (no "=?charset?...?=" wrapper at all) are now also charset
+	  detected instead of being passed through unconverted
+
 Jul 2026 - EmailReporting-1.0.6 (this fork)
 	- bug_report_mail.php now exits non-zero if any mailbox failed to process
 	  (bad login, connection refused, disabled mailbox, wrong project, etc.);
