@@ -1,10 +1,73 @@
 Changelog:
-Jul 2026 - EmailReporting-1.0.9 (this fork)
+Jul 2026 - EmailReporting-1.0.8 (this fork)
+	- New: redesigned "Manage Mailboxes" mailbox selection. The mailbox picker
+	  and its actions moved to the top of the page: pick a mailbox from the
+	  dropdown and the settings form below repopulates instantly via
+	  JavaScript (no page reload), including toggling the IMAP-only fields
+	  based on mailbox type. Add/Edit/Copy/Test/Complete test/Delete are now
+	  individual buttons that submit immediately, instead of a radio button
+	  selection followed by a separate generic submit button. Delete asks for
+	  confirmation before deleting; Add asks for confirmation if Description,
+	  Username or Password is left blank; Complete test asks for confirmation
+	  before running (replacing the old static warning note, since there's no
+	  longer an intermediate page state to show it on)
+	- Fixed the mailbox switcher's JavaScript not running at all: MantisBT's
+	  default Content-Security-Policy (script-src 'self', no nonce or
+	  'unsafe-inline' - see core/http_api.php's http_security_headers())
+	  silently blocks any inline <script> tag, which is how the switcher was
+	  first implemented. It now ships as a real external file
+	  (files/manage_mailbox.js, served via plugin_file()), with all
+	  server-rendered data passed through data-* attributes instead of
+	  PHP-interpolated JS literals
+	- Fixed the mailbox action buttons (Edit/Copy/Test/Complete test/Delete)
+	  staying invisible forever after being shown once: they had their own
+	  redundant "display:none" baked in server-side, in addition to their
+	  wrapping <span>, but the switcher only ever toggles the span's
+	  visibility - so the buttons' own inline style was never cleared
+	- Fixed the "Select mailbox" dropdown and its Add button visually
+	  swapping places regardless of source order: ace's admin theme sets
+	  ".inline{display:inline-block!important}", which beat the container's
+	  plain (non-!important) "display:flex" - once stuck at inline-block,
+	  Bootstrap's ".btn-toolbar .btn{float:left}" floated only the button
+	  (the <select> isn't a .btn), pulling it visually to the left. Both
+	  button rows now use plain styled containers instead of the
+	  "btn-toolbar"/"inline" theme classes
+	- After Add/Copy/Edit succeeds, "Manage Mailboxes" now redirects back
+	  with that mailbox selected and loaded, showing its Save/Copy/Test/
+	  Complete test/Delete buttons immediately - previously every submit
+	  redirected back to the blank "new mailbox" state regardless of action,
+	  so adding a mailbox left no obvious way to immediately continue editing
+	  or testing the one you'd just created
+	- New: "Manage Mailboxes" now starts on a minimal screen showing only the
+	  mailbox picker and an Add button; the settings form only appears once a
+	  mailbox is selected or Add is clicked. Clicking Add while the form is
+	  already showing something (an existing mailbox, or a blank one you've
+	  started filling in) now asks for confirmation before discarding it -
+	  except on that initial pristine screen, where there's nothing to lose
+	- New: Test and Complete test no longer submit the form or reload the
+	  page - they now run in the background (new pages/manage_mailbox_test.php
+	  endpoint) against whatever is currently in the fields, saved or not,
+	  and show the result inline. Previously, testing a brand new mailbox you
+	  hadn't saved yet (only possible after this update, since Test/Complete
+	  test now work before saving at all) would have discarded whatever you'd
+	  typed the moment the page reloaded to show the result. Complete test
+	  still asks for confirmation before running, same as before. The result
+	  is now also color-coded (green tint/border for success, red for
+	  failure), instead of always looking the same regardless of outcome
+	- New: while actively filling in a brand new, not-yet-saved mailbox, the
+	  Add button now relabels itself "Save" once it's genuinely about to
+	  persist that mailbox - it stayed labeled "Add" in every state before,
+	  even when it was the only way to actually save a new mailbox's fields
+	- New: the mailbox password field is no longer pre-filled with the stored
+	  (decoded) password. Leaving it blank when adding/editing/copying/testing a
+	  mailbox now means "keep the current password" instead of clearing it - this
+	  was required to enable the instant mailbox switcher above without exposing
+	  every configured mailbox's decoded password in the page at once, but is
+	  also a security improvement on its own: the stored password is no longer
+	  ever sent back to the browser at all
 	- Fixed a stray unclosed "<form>" tag on "Manage EmailReporting" (the
 	  mailbox-selector form at the bottom of the page) that should have been the
 	  closing "</form>" tag, leaving the page with invalid/unclosed markup
-
-Jul 2026 - EmailReporting-1.0.8 (this fork)
 	- New: added an exclusion list for the existing "Add users to issue monitoring
 	  list from Cc and To fields in mail header" feature (mail_add_users_from_cc_to).
 	  A new option, mail_monitor_exclude_addresses, lets you list addresses

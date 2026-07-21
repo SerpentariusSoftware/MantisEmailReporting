@@ -829,9 +829,13 @@ if ( !function_exists( 'test_database_utf8' ) )
 						break;
 
 					case 'string_password':
+						// Never send the stored (decoded) password back to the browser - an
+						// empty submission means "keep the existing password" (see
+						// manage_mailbox_edit.php), so there is no need to round-trip it at all.
+						$t_password_placeholder = ( !is_blank( base64_decode( $t_value ?? '' ) ) ) ? plugin_lang_get( 'erp_password_hint' ) : '';
 ?>
 <td colspan="2">
-	<input class="input-sm" <?php echo helper_get_tab_index() ?> type="password" size="64" maxlength="50" name="<?php echo $t_input_name ?>" value="<?php echo string_attribute( base64_decode( $t_value??'' ) ) ?>"/>
+	<input class="input-sm" <?php echo helper_get_tab_index() ?> type="password" size="64" maxlength="50" name="<?php echo $t_input_name ?>" value="" placeholder="<?php echo string_attribute( $t_password_placeholder ) ?>"/>
 </td>
 <?php
 

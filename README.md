@@ -105,6 +105,30 @@ Current state of this fork
 ===========================
 On top of the official 0.10.1 release, this copy includes:
 
+* **New: redesigned "Manage Mailboxes".** The page starts on a minimal screen
+  showing only the mailbox picker and an Add button; the settings form only
+  appears once you pick a mailbox or click Add, repopulating instantly via
+  JavaScript (no page reload) and toggling the IMAP-only fields based on
+  mailbox type. Add/Save/Copy/Test/Complete test/Delete are individual
+  buttons that submit immediately, replacing the old
+  radio-button-plus-generic-submit-button flow. Clicking Add while the form
+  already shows something asks for confirmation before discarding it; Delete,
+  Add-with-blank-fields, and Complete test each ask for confirmation before
+  proceeding. Test and Complete test no longer submit the form or reload the
+  page at all - they run in the background against whatever's currently in
+  the fields (saved or not) and show the result inline, so testing
+  connection settings for a mailbox you haven't saved yet no longer risks
+  losing what you've typed. As part of all this, the mailbox password field
+  is no longer pre-filled with the stored (decoded) password: leaving it
+  blank now means "keep the current password" rather than clearing it, which
+  also means the stored password is never sent back to the browser at all
+  anymore. The switcher's JavaScript ships as a real external file
+  (`files/manage_mailbox.js`) rather than an inline `<script>` tag, since
+  MantisBT's default CSP (`script-src 'self'`) silently blocks inline
+  scripts entirely.
+* **Fixed a stray unclosed `<form>` tag** that used to be on "Manage EmailReporting"
+  (in the old mailbox-selector form at the bottom of the page, since removed
+  by the redesign above).
 * **New: Cc/To auto-monitor exclusion list, and an option to auto-publicize on
   monitor add.** The existing "Add users to issue monitoring list from Cc and To
   fields in mail header" option (`mail_add_users_from_cc_to`) now has two

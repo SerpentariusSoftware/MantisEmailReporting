@@ -27,6 +27,15 @@ if ( $f_mailbox_action === 'add' || $f_mailbox_action === 'copy' || ( ( $f_mailb
 //		'link_rules'			=> gpc_get_int_array( 'link_rules', array() ),
 	);
 
+	// The password field is never pre-filled with the stored (decoded) password
+	// anymore (see ERP_output_config_option's 'string_password' case), so an
+	// empty submission means "keep the existing password" rather than clearing
+	// it, for any action operating on an already-existing mailbox.
+	if ( $t_mailbox[ 'erp_password' ] === '' && in_array( $f_mailbox_action, array( 'edit', 'copy', 'test', 'complete_test' ), TRUE ) && isset( $t_mailboxes[ $f_select_mailbox ][ 'erp_password' ] ) )
+	{
+		$t_mailbox[ 'erp_password' ] = $t_mailboxes[ $f_select_mailbox ][ 'erp_password' ];
+	}
+
 	if ( $t_mailbox[ 'mailbox_type' ] === 'IMAP' )
 	{
 		$t_mailbox_imap = array(
@@ -45,13 +54,24 @@ if ( $f_mailbox_action === 'add' || $f_mailbox_action === 'copy' || ( ( $f_mailb
 	}
 }
 
+// Which mailbox (if any) to land on after redirecting back to
+// manage_mailbox - so Add/Copy/Edit take you straight to that mailbox's
+// Save/Copy/Test/Complete test/Delete buttons instead of always resetting to
+// the blank "new mailbox" state. Delete has nothing to land on (the mailbox
+// is gone), so it correctly falls through to the default blank state.
+$t_redirect_select_mailbox = NULL;
+
 if ( $f_mailbox_action === 'add' || $f_mailbox_action === 'copy' )
 {
 	$t_mailboxes[] = $t_mailbox;
+	// array_key_last(), not count() - mailbox keys can have gaps from
+	// earlier deletions, so the just-appended key isn't always count()-1
+	$t_redirect_select_mailbox = array_key_last( $t_mailboxes );
 }
 elseif ( $f_mailbox_action === 'edit' && $f_select_mailbox >= 0 )
 {
 	$t_mailboxes[ $f_select_mailbox ] = $t_mailbox;
+	$t_redirect_select_mailbox = $f_select_mailbox;
 }
 elseif ( $f_mailbox_action === 'delete' && $f_select_mailbox >= 0 )
 {
@@ -116,5 +136,12 @@ if( plugin_config_get( 'mailboxes' ) !== $t_mailboxes && ( $f_mailbox_action ===
 
 if ( !isset( $t_no_redirect ) )
 {
-	print_successful_redirect( plugin_page( 'manage_mailbox', TRUE ) );
+	$t_redirect_url = plugin_page( 'manage_mailbox', TRUE );
+
+	if ( $t_redirect_select_mailbox !== NULL )
+	{
+		$t_redirect_url .= '&select_mailbox=' . $t_redirect_select_mailbox . '&mailbox_action=edit';
+	}
+
+	print_successful_redirect( $t_redirect_url );
 }
