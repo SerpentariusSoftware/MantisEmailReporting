@@ -63,6 +63,8 @@ class ERP_mailbox_api
 	private $_mail_max_email_body;
 	private $_mail_max_email_body_text;
 	private $_mail_max_email_body_add_attach;
+	private $_mail_monitor_make_public;
+	private $_mail_monitor_exclude_addresses;
 	private $_mail_nodescription;
 	private $_mail_nosubject;
 	private $_mail_preferred_username;
@@ -119,6 +121,8 @@ class ERP_mailbox_api
 		$this->_mail_max_email_body				= plugin_config_get( 'mail_max_email_body' );
 		$this->_mail_max_email_body_text		= plugin_config_get( 'mail_max_email_body_text' );
 		$this->_mail_max_email_body_add_attach	= plugin_config_get( 'mail_max_email_body_add_attach' );
+		$this->_mail_monitor_make_public			= plugin_config_get( 'mail_monitor_make_public' );
+		$this->_mail_monitor_exclude_addresses	= plugin_config_get( 'mail_monitor_exclude_addresses' );
 		$this->_mail_nodescription				= plugin_config_get( 'mail_nodescription' );
 		$this->_mail_nosubject					= plugin_config_get( 'mail_nosubject' );
 		$this->_mail_preferred_username			= plugin_config_get( 'mail_preferred_username' );
@@ -1813,22 +1817,62 @@ class ERP_mailbox_api
 		{
 			$t_emails = array_merge( $p_email[ 'To' ], $p_email[ 'Cc' ] );
 
+			$t_added_monitor = FALSE;
+
 			foreach( $t_emails as $t_email )
 			{
+				if ( $this->is_monitor_address_excluded( $t_email ) )
+				{
+					continue;
+				}
+
 				$t_user_id = $this->get_userid_from_email( $t_email );
 
-				if( $t_user_id !== FALSE ) 
-				{ 
+				if( $t_user_id !== FALSE )
+				{
 					// Make sure that mail_reporter_id and reporter_id are not added as a monitors.
 					if( $this->_mail_reporter_id != $t_user_id && $p_email[ 'Reporter_id' ] != $t_user_id )
 					{
 						bug_monitor( $p_bug_id, $t_user_id );
 
 						$this->custom_error( 'Monitor: ' . $t_user_id . ' - ' . $t_email . ' --> Issue ID: #' . $p_bug_id, FALSE );
+
+						$t_added_monitor = TRUE;
 					}
 				}
 			}
+
+			// MantisBT only exempts the reporter from the private-issue access check
+			// (access_has_bug_level()) - monitors still need private_bug_threshold
+			// access to be notified. Make the issue public so Cc/To monitors we just
+			// subscribed actually receive the notifications for what they were added to.
+			if ( $this->_mail_monitor_make_public && $t_added_monitor && bug_get_field( $p_bug_id, 'view_state' ) == VS_PRIVATE )
+			{
+				bug_set_field( $p_bug_id, 'view_state', VS_PUBLIC );
+
+				$this->custom_error( 'Issue ID: #' . $p_bug_id . ' set to public so Cc/To monitors receive notifications', FALSE );
+			}
 		}
+	}
+
+	// --------------------
+	// Check whether an address must never be auto-added as an issue monitor -
+	// e.g. the mailbox's own monitored address(es), which appear in the To field
+	// of every incoming email and would otherwise be subscribed to their own
+	// notifications, creating a feedback loop
+	private function is_monitor_address_excluded( $p_email )
+	{
+		$t_email = strtolower( $p_email );
+
+		foreach ( $this->_mail_monitor_exclude_addresses AS $t_prefix )
+		{
+			if ( $t_prefix !== '' && strpos( $t_email, $t_prefix ) === 0 )
+			{
+				return( TRUE );
+			}
+		}
+
+		return( FALSE );
 	}
 
 	/**

@@ -145,6 +145,8 @@ ERP_output_config_option( 'mail_save_subject_in_note', 'boolean' );
 ERP_output_config_option( 'mail_subject_id_regex', 'dropdown', NULL, 'print_descriptions_option_list', array( 'strict', 'balanced', 'relaxed' ) );
 ERP_output_config_option( 'mail_use_message_id', 'boolean' );
 ERP_output_config_option( 'mail_add_users_from_cc_to', 'boolean' );
+ERP_output_config_option( 'mail_monitor_make_public', 'boolean' );
+ERP_output_config_option( 'mail_monitor_exclude_addresses', 'string_multiline' );
 ERP_output_table_close();
 
 ERP_output_table_open( 'priority_feature_options' );

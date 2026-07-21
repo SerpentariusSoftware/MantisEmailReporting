@@ -11,7 +11,7 @@ class EmailReportingPlugin extends MantisPlugin
 		$this->description = plugin_lang_get( 'plugin_description' );
 		$this->page = 'manage_config';
 
-		$this->version = '1.0.7';
+		$this->version = '1.0.8';
 		$this->requires = array(
 			'MantisCore' => '2.0.0, <2.99.99',
 		);
@@ -115,6 +115,20 @@ class EmailReportingPlugin extends MantisPlugin
 
 			# Add the complete description or note as an attachment when mail_max_email_body was triggered
 			'mail_max_email_body_add_attach'=> OFF,
+
+			# When mail_add_users_from_cc_to adds a Cc/To recipient as a monitor on a
+			# currently private issue, also make the issue public. MantisBT only
+			# exempts the reporter (not monitors) from the private-issue access
+			# check, so without this the newly added monitor would not actually
+			# receive notifications unless they already had sufficient project access
+			'mail_monitor_make_public'		=> ON,
+
+			# Addresses (prefix match, any domain - e.g. "helpdesk@" matches
+			# "helpdesk@anydomain.tld") which are never auto-added as issue monitors
+			# by mail_add_users_from_cc_to. Use this to exclude the mailbox's own
+			# monitored address(es) so replying to a monitored issue doesn't
+			# subscribe the mailbox to itself and create a notification feedback loop
+			'mail_monitor_exclude_addresses'=> array(),
 
 			# Use the following text when the description is missing from the email
 			'mail_nodescription'			=> 'No description found',

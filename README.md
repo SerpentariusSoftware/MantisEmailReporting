@@ -1,6 +1,6 @@
 # MantisBT EmailReporting Plugin
 
-**Version 1.0.6** (this fork)
+**Version 1.0.8** (this fork)
 
 The EmailReporting plugin allows you to report an issue in MantisBT by sending an
 email to a particular mail account. It can also add notes/attachments to an existing
@@ -105,6 +105,27 @@ Current state of this fork
 ===========================
 On top of the official 0.10.1 release, this copy includes:
 
+* **New: Cc/To auto-monitor exclusion list, and an option to auto-publicize on
+  monitor add.** The existing "Add users to issue monitoring list from Cc and To
+  fields in mail header" option (`mail_add_users_from_cc_to`) now has two
+  companion options: `mail_monitor_exclude_addresses` (prefix match, any domain -
+  e.g. `helpdesk@` matches any domain), so addresses like your own monitored
+  mailbox's address never get auto-subscribed to their own notifications and
+  create a feedback loop; and `mail_monitor_make_public` (default ON), since
+  MantisBT's notification filter only exempts the *reporter* from the
+  private-issue access check (not monitors) - without it, adding a Cc/To monitor
+  to a private issue wouldn't actually get them the notifications they were just
+  subscribed to unless the project already gave them sufficient access,
+  previously requiring doing this by hand.
+* **Fixed accented characters in the email subject turning into `?`.** The
+  charset-detection fix below (originally applied to the body) had never been
+  mirrored for the Subject header: an RFC 2047 encoded-word's declared charset
+  was trusted unconditionally, so a mail client/webmail gateway mislabeling it
+  (e.g. tagging ISO-8859-2 text as UTF-8) made accented characters silently
+  turn into `?`. Header decoding now validates the declared charset against the
+  actual bytes and falls back to detection, the same as the body; raw,
+  non-RFC2047 8-bit subjects are now also charset-detected instead of being
+  passed through unconverted.
 * **PHP 8.0–8.4 compatibility.** The upstream code (including the vendored PEAR
   libraries under `core_pear/`) predates PHP 8 and had several fatal errors and
   deprecation warnings under it, including a parse-time fatal error in the
@@ -185,6 +206,8 @@ Feature set
   priority mapping
 * New issues inherit their target project's visibility (private projects create
   private issues)
+* Optionally auto-add Cc/To recipients as issue monitors (with a configurable
+  address exclusion list, and auto-publicize private issues so they're notified)
 * Debug mode: save raw/parsed emails to disk, track memory usage, optionally attach
   the complete original email to the issue
 * Cron failure alerting via an optional wrapper script (see above)
