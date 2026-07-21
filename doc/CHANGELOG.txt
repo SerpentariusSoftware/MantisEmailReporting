@@ -1,4 +1,9 @@
 Changelog:
+Jul 2026 - EmailReporting-1.0.9 (this fork)
+	- Fixed a stray unclosed "<form>" tag on "Manage EmailReporting" (the
+	  mailbox-selector form at the bottom of the page) that should have been the
+	  closing "</form>" tag, leaving the page with invalid/unclosed markup
+
 Jul 2026 - EmailReporting-1.0.8 (this fork)
 	- New: added an exclusion list for the existing "Add users to issue monitoring
 	  list from Cc and To fields in mail header" feature (mail_add_users_from_cc_to).
