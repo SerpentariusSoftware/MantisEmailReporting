@@ -1,6 +1,18 @@
 # Changelog
 
 ## Jul 2026 - EmailReporting-1.0.8 (this fork)
+- New: every "[?]" help link throughout "Manage Configuration Options" and
+  "Manage Mailboxes" used to point at the upstream (pre-fork) plugin's wiki
+  page, which doesn't describe this fork's own options at all (many have
+  been renamed, added, or removed since 0.10.1). They now point at a new
+  local documentation page instead (`doc/DOCUMENTATION.md`, rendered by the
+  "Documentation" nav tab, i.e. `pages/view_readme.php` - previously this
+  page just dumped the stale, unrelated `doc/INSTALL.txt`), anchored
+  straight to the matching property. Every option shown in the UI now has an
+  up-to-date description, including several added by this fork that were
+  never documented anywhere before now (`mail_monitor_make_public`,
+  `mail_monitor_exclude_addresses`, `mail_strip_quoted_lines`,
+  `mail_strip_quoted_lines_min_lines`)
 - New: the Change Log page (and this file) now renders as actual Markdown -
   headers, bullet lists, etc. - instead of a wall of preformatted plain text.
   `doc/CHANGELOG.txt` is now `doc/CHANGELOG.md`, and `pages/view_changelog.php`

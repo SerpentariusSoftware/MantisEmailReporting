@@ -336,7 +336,12 @@
 		}
 
 		echo plugin_lang_get( $t_description );
-		echo ' <a href="http://www.mantisbt.org/wiki/doku.php/mantisbt:plugins:emailreporting#' . $t_a_name . '" target="_blank">[?]</a>';
+		// Used to link out to the upstream (pre-fork) plugin's wiki page;
+		// that page doesn't describe this fork's own options at all (renamed,
+		// added, or removed since 0.10.1), so this now points at our own
+		// documentation (pages/view_readme.php) instead, anchored to the
+		// matching property heading there.
+		echo ' <a href="' . plugin_page( 'view_readme' ) . '#' . $t_a_name . '" target="_blank">[?]</a>';
 	}
 
 	# This overwrites a specific configuration option for the current request

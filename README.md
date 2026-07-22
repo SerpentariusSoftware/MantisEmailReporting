@@ -9,7 +9,9 @@ issue by replying to it.
 This copy is a locally maintained fork of the official plugin (based on upstream
 version 0.10.1, see [Original project](#original-project) below) with additional
 fixes and features applied on top — see [Current state of this fork](#current-state-of-this-fork)
-and the [Changelog](doc/CHANGELOG.md) for details.
+and the [Changelog](doc/CHANGELOG.md) for details. For a full reference of every
+configuration option (also available in-app under "Manage EmailReporting" →
+"Documentation"), see [doc/DOCUMENTATION.md](doc/DOCUMENTATION.md).
 
 Requirements (this fork)
 =========================
@@ -105,6 +107,19 @@ Current state of this fork
 ===========================
 On top of the official 0.10.1 release, this copy includes:
 
+* **New: local, up-to-date documentation with per-option descriptions.** The
+  "[?]" help link next to every option in "Manage Configuration Options" and
+  "Manage Mailboxes" used to point at the upstream (pre-fork) plugin's wiki
+  page, which doesn't describe this fork's own options (several have been
+  renamed, added, or removed since 0.10.1). It now points at
+  [doc/DOCUMENTATION.md](doc/DOCUMENTATION.md), rendered by this fork's
+  "Documentation" nav tab and anchored straight to the matching property -
+  including full descriptions for options this fork added that were
+  previously undocumented anywhere (`mail_monitor_make_public`,
+  `mail_monitor_exclude_addresses`, `mail_strip_quoted_lines`,
+  `mail_strip_quoted_lines_min_lines`). The Change Log and Documentation
+  pages both now render real Markdown instead of a wall of preformatted
+  plain text.
 * **New: redesigned "Manage Mailboxes".** The page starts on a minimal screen
   showing only the mailbox picker and an Add button; the settings form only
   appears once you pick a mailbox or click Add, repopulating instantly via
