@@ -9,7 +9,7 @@ issue by replying to it.
 This copy is a locally maintained fork of the official plugin (based on upstream
 version 0.10.1, see [Original project](#original-project) below) with additional
 fixes and features applied on top — see [Current state of this fork](#current-state-of-this-fork)
-and the [Changelog](doc/CHANGELOG.txt) for details.
+and the [Changelog](doc/CHANGELOG.md) for details.
 
 Requirements (this fork)
 =========================
@@ -240,8 +240,10 @@ License
 =======
 GPL-2.0, same as the original plugin and MantisBT itself — see [LICENSE](LICENSE).
 The vendored third-party code keeps its own license: `core_pear/` (PEAR, Auth_SASL,
-Net_POP3/IMAP, Mail_mimeDecode) is BSD-licensed, and `core/Mail/Markdownify/` is
-LGPL-licensed; see the header comments in those files.
+Net_POP3/IMAP, Mail_mimeDecode) is BSD-licensed, `core/Mail/Markdownify/` is
+LGPL-licensed, and `core/Markdown/` (Parsedown, used to render the Change Log
+page) is MIT-licensed; see the header comments and `LICENSE`/`LICENSE.txt`
+files in those directories.
 
 Original project
 =================
